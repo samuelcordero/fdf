@@ -5,12 +5,13 @@
 #                                                     +:+ +:+         +:+      #
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/05/22 12:47:56 by sacorder          #+#    #+#              #
-#    Updated: 2023/05/23 14:58:56 by sacorder         ###   ########.fr        #
+#    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
+#    Updated: 2023/05/23 15:21:10 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT = libft/libft.a
+MINILIBX = minilibx/mlx.a
 LIB = -L libft -l:libft.a -L minilibx-linux -lmlx -lXext -lX11 -lm
 NAME = fdf
 #FLAGS = -Wall -Wextra -Werror
@@ -38,10 +39,13 @@ all: $(NAME)
 $(LIBFT):
 	@make bonus -C ./libft
 
-$(NAME): $(LIBFT) $(OBJ) $(INCLUDE) 
+$(MINILIBX):
+	@make -C ./minilibx-linux
+	
+$(NAME): $(LIBFT) $(OBJ) $(INCLUDE) $(MINILIBX)
 	$(CC) -o $(NAME) $(OBJ) $(LIB)
 
-bonus: $(LIBFT) $(OBJBONUS) $(INCLUDE)
+bonus: $(LIBFT) $(OBJBONUS) $(INCLUDE) $(MINILIBX)
 	$(CC) -o $(NAME) $(OBJBONUS) $(LIB)
 
 %.o: %.c
@@ -49,11 +53,13 @@ bonus: $(LIBFT) $(OBJBONUS) $(INCLUDE)
 
 clean:
 	@make clean -C ./libft
+	@make clean -C ./minilibx-linux
 	$(RM) $(OBJ)
 	$(RM) $(OBJBONUS)
 
 fclean: clean
 	@make fclean -C ./libft
+	@make clean -C ./minilibx-linux
 	$(RM) $(NAME)
 
 re: fclean all
