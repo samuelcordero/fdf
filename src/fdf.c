@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:44 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/24 20:12:36 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/24 23:18:53 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,13 @@ t_segment	*ft_transform_segment(t_segment seg)
 	res = malloc(sizeof(t_segment));
 	if (!res)
 		return (NULL);
-	res->x0 = seg
-
+	res->x0 = seg.x0 - seg.y0;
+	res->y0 = (seg.x0 * 0.5) + (seg.y0 * 0.5);
+	res->x1 = seg.x1 - seg.y1;
+	res->y1 = (seg.x1 * 0.5) + (seg.y1 * 0.5);
+	//ft_printf("original: x0:%i x1:%i y0:%i y1:%i transformed: x0:%i x1:%i y0:%i y1:%i\n", seg.x0,);
+	return (res);
+}
 int	ft_array_len(char **arr)
 {
 	int counter;
@@ -195,22 +200,44 @@ void	ft_putmap(t_fdfmap map, void *mlx, void *win)
 	int x = -1;
 	int y = -1;
 	int delta;
+	t_segment *original;
+	t_segment *transformed;
 
-	if ((400 - (2*xp)) / map.width < (400 - (2*yp)) / map.height)
+
+	original = malloc(sizeof(t_segment));
+	if ((600 - (2*xp)) / map.width < (600 - (2*yp)) / map.height)
 		delta = (600 - (2*xp)) / map.width ;
 	else
-		delta = (6e00 - (2*yp)) / map.height;
+		delta = (600 - (2*yp)) / map.height;
+	delta /= 2;
+	xp = 300;
 	while (++y < map.height)
 	{
 		while (++x < map.width)
 		{
+			original->x0 = xp;
+			original->y0 = yp;
+			original->x1 = xp;
+			original->y1 = yp + delta;
+			transformed = ft_transform_segment(*original);
+			transformed->y0 -= (map.arr[y][x] * delta / 4);
+			if (y + 1 < map.height)
+				transformed->y1 -= (map.arr[y + 1][x] * delta / 4);
 			if(y < map.height - 1)
-				drawline(mlx, win, xp, yp, xp, yp + delta, 0xFFFFFF);
+				drawsegment(mlx, win, *transformed, 0x0000FF);
+			free(transformed);
+			original->x1 = xp + delta;
+			original->y1 = yp;
+			transformed = ft_transform_segment(*original);
+			transformed->y0 -= (map.arr[y][x] * delta / 4);
+			if (x + 1 < map.height)
+				transformed->y1 -= (map.arr[y][x + 1] * delta / 4);
 			if(x < map.width - 1)
-				drawline(mlx, win, xp, yp, xp + delta, yp, 0xFFFFFF);
+				drawsegment(mlx, win, *transformed, 0xFF0000);
+			free(transformed);
 			xp += delta;
 		}
-		xp = 10;
+		xp = 300;
 		yp += delta;
 		x = -1;
 	}
