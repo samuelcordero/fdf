@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:44 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/24 16:39:32 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:55:19 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,20 @@ int	ft_array_len(char **arr)
 	return (counter);
 }
 
-int	*ft_carr_to_iarr(char **carr)
+void	ft_carr_to_iarr(t_fdfmap *map, char **carr, int row)
 {
-	int	*iarr;
-	int	len;
 	int	pos;
 
 	pos = -1;
 	if (!carr)
 		return (NULL);
-	len = ft_array_len(carr);
-	iarr = malloc(sizeof(int) * (len + 1));
-	while (++pos < len)
-		iarr[pos] = ft_atoi(carr[pos]);
-	iarr[pos] = INT_MIN;
-	return (iarr);
+	if (!row)
+		map->width = ft_array_len(carr);
+	else if (map->width != ft_array_len(carr))
+		exit(1);
+	map->arr[row] = malloc(sizeof(int) * (map->width));
+	while (++pos < map->width)
+		map->arr[row][pos] = ft_atoi(carr[pos]);
 }
 
 void	ft_free_array(void **array) {
@@ -107,52 +106,53 @@ int **ft_realloc_iarr(int **arr, int *row_size)
 	return (res);
 }
 
-int	**parse_map(char *file)
+t_fdfmap	*parse_map(char *file)
 {
+	t_fdfmap	*res;
 	int		fd;
-	int		**res;
-	int		row_size;
 	int		row;
 	char	*buffer;
 	char	**splitted_buffer;
 
-	row_size = 8;
+	res = malloc(sizeof(t_fdfmap));
+	res->height = 8;
 	row = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return (ft_putendl_fd("Couldn't open specified file", 2), NULL); 
-	res = malloc(sizeof(int *) * (row_size + 1));
-	res[row_size] = NULL;
+		exit(1);
+		//return (ft_putendl_fd("Couldn't open specified file", 2), NULL); 
+	res->arr = malloc(sizeof(int *) * (res->height + 1));
+	res->arr[res->height] = NULL;
 	buffer = get_next_line(fd);
 	while (buffer)
 	{
 		splitted_buffer = ft_split(buffer, ' ');
-		res[row] = ft_carr_to_iarr(splitted_buffer);
+		ft_carr_to_iarr(res, splitted_buffer, row);
 		ft_free_array((void **) splitted_buffer);
 		free(buffer);
 		row++;
 		buffer = get_next_line(fd);
-		if (row == row_size && buffer)
-			res = ft_realloc_iarr(res, &row_size);
+		if (row == res->height && buffer)
+			res->arr = ft_realloc_iarr(res->arr, &res->height);
 	}
-	res[row] = NULL;
+	res->arr[row] = NULL;
 	close(fd);
 	return (res);
 }
 
-void	ft_printmap(int **map)
+void	ft_printmap(t_fdfmap map)
 {
 	int x;
 	int	y;
 
 	x = -1;
 	y = x;
-	while(map[++y])
+	while(map.arr[++y])
 	{
-		while (map[y][++x] != INT_MIN)
+		while (++x < map.width)
 		{
-			ft_putnbr_fd(map[y][x], 1);
-			ft_putstr_fd("  ", 1);
+			ft_putnbr_fd(map.arr[y][x], 1);
+			ft_putchar_fd(' ', 1);
 		}
 		ft_putchar_fd('\n', 1);
 		x = -1;
@@ -161,9 +161,9 @@ void	ft_printmap(int **map)
 
 int	main(int argc, char **argv)
 {
-	void	*mlx;
-	void	*win;
-	int		**map;
+	void		*mlx;
+	void		*win;
+	t_fdfmap	*map;
 
 	mlx = mlx_init();
 	if (!mlx)
@@ -172,9 +172,10 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return(ft_putendl_fd("Wrong args. Usage: ./fdf mapfile.fdf", 2), 1);
 	map = parse_map(argv[1]);
-	if (!map)
+	ft_printf("height: %i, width: %i\n", map->height, map->width);
+	if (!map->arr)
 		return(ft_putendl_fd("Couldn't load map", 2), 1);
-	ft_printmap(map);
+	ft_printmap(*map);
 	/* drawline(mlx, win, 400, 400, 0, 0, 0xFF0000);
 	while(1)
 		ft_putendl_fd("ok", 1); */
