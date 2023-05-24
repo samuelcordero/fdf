@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:44 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/24 23:18:53 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/24 23:43:00 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,22 +219,24 @@ void	ft_putmap(t_fdfmap map, void *mlx, void *win)
 			original->y0 = yp;
 			original->x1 = xp;
 			original->y1 = yp + delta;
-			transformed = ft_transform_segment(*original);
-			transformed->y0 -= (map.arr[y][x] * delta / 4);
-			if (y + 1 < map.height)
-				transformed->y1 -= (map.arr[y + 1][x] * delta / 4);
 			if(y < map.height - 1)
-				drawsegment(mlx, win, *transformed, 0x0000FF);
-			free(transformed);
+			{
+				transformed = ft_transform_segment(*original);
+				transformed->y0 -= (map.arr[y][x] * delta / 4);
+				transformed->y1 -= (map.arr[y + 1][x] * delta / 4);
+				drawsegment(mlx, win, *transformed, 0xFFFFFF);
+				free(transformed);
+			}
 			original->x1 = xp + delta;
 			original->y1 = yp;
-			transformed = ft_transform_segment(*original);
-			transformed->y0 -= (map.arr[y][x] * delta / 4);
-			if (x + 1 < map.height)
-				transformed->y1 -= (map.arr[y][x + 1] * delta / 4);
 			if(x < map.width - 1)
-				drawsegment(mlx, win, *transformed, 0xFF0000);
-			free(transformed);
+			{
+				transformed = ft_transform_segment(*original);
+				transformed->y0 -= (map.arr[y][x] * delta / 4);
+				transformed->y1 -= (map.arr[y][x + 1] * delta / 4);
+				drawsegment(mlx, win, *transformed, 0xFFFFFF);
+				free(transformed);
+			}
 			xp += delta;
 		}
 		xp = 300;
@@ -252,7 +254,7 @@ int	main(int argc, char **argv)
 	mlx = mlx_init();
 	if (!mlx)
 		return (1);
-	win = mlx_new_window(mlx, 600, 600, "Test window!");
+	win = mlx_new_window(mlx, 600, 600, "Fdf");
 	if (argc != 2)
 		return(ft_putendl_fd("Wrong args. Usage: ./fdf mapfile.fdf", 2), 1);
 	map = parse_map(argv[1]);
