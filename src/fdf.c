@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:44 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/24 18:33:36 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/24 18:41:16 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,6 @@ int	main(int argc, char **argv)
 		return(ft_putendl_fd("Couldn't load map", 2), 1);
 	ft_printmap(*map);
 	ft_putmap(*map, mlx, win);
-	drawline(mlx, win, 600, 600, 0, 0, 0xFF0000);
 	while(1)
 		sleep(5);
 	return (0); 
