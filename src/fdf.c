@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:44 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/24 18:41:16 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/24 20:12:36 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,34 @@ void	drawline(void *mlx, void *mlxwin, int x0, int y0, int x1, int y1, int color
     	--pixels;
 	}
 }
+
+void	drawsegment(void *mlx, void *mlxwin, t_segment seg, int color)
+{
+	double deltaX = seg.x1 - seg.x0; // 10
+	double deltaY = seg.y1 - seg.y0; // 0
+	int pixels = ft_sqrt((deltaX * deltaX) + (deltaY * deltaY));
+
+	deltaX /= pixels; // 1
+	deltaY /= pixels; // 0
+	double pixelX = seg.x0;
+	double pixelY = seg.y0;
+	while (pixels)
+	{
+   		mlx_pixel_put(mlx, mlxwin, pixelX, pixelY, color);
+    	pixelX += deltaX;
+    	pixelY += deltaY;
+    	--pixels;
+	}
+}
+
+t_segment	*ft_transform_segment(t_segment seg)
+{
+	t_segment	*res;
+
+	res = malloc(sizeof(t_segment));
+	if (!res)
+		return (NULL);
+	res->x0 = seg
 
 int	ft_array_len(char **arr)
 {
