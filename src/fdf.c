@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:44 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/24 17:55:19 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/24 18:33:36 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,7 @@ t_fdfmap	*parse_map(char *file)
 			res->arr = ft_realloc_iarr(res->arr, &res->height);
 	}
 	res->arr[row] = NULL;
+	res->height = row;
 	close(fd);
 	return (res);
 }
@@ -147,7 +148,7 @@ void	ft_printmap(t_fdfmap map)
 
 	x = -1;
 	y = x;
-	while(map.arr[++y])
+	while(++y < map.height)
 	{
 		while (++x < map.width)
 		{
@@ -155,6 +156,34 @@ void	ft_printmap(t_fdfmap map)
 			ft_putchar_fd(' ', 1);
 		}
 		ft_putchar_fd('\n', 1);
+		x = -1;
+	}
+}
+
+void	ft_putmap(t_fdfmap map, void *mlx, void *win)
+{
+	int xp = 10;
+	int yp = 10;
+	int x = -1;
+	int y = -1;
+	int delta;
+
+	if ((400 - (2*xp)) / map.width < (400 - (2*yp)) / map.height)
+		delta = (600 - (2*xp)) / map.width ;
+	else
+		delta = (6e00 - (2*yp)) / map.height;
+	while (++y < map.height)
+	{
+		while (++x < map.width)
+		{
+			if(y < map.height - 1)
+				drawline(mlx, win, xp, yp, xp, yp + delta, 0xFFFFFF);
+			if(x < map.width - 1)
+				drawline(mlx, win, xp, yp, xp + delta, yp, 0xFFFFFF);
+			xp += delta;
+		}
+		xp = 10;
+		yp += delta;
 		x = -1;
 	}
 }
@@ -168,7 +197,7 @@ int	main(int argc, char **argv)
 	mlx = mlx_init();
 	if (!mlx)
 		return (1);
-	win = mlx_new_window(mlx, 400, 400, "Test window!");
+	win = mlx_new_window(mlx, 600, 600, "Test window!");
 	if (argc != 2)
 		return(ft_putendl_fd("Wrong args. Usage: ./fdf mapfile.fdf", 2), 1);
 	map = parse_map(argv[1]);
@@ -176,8 +205,9 @@ int	main(int argc, char **argv)
 	if (!map->arr)
 		return(ft_putendl_fd("Couldn't load map", 2), 1);
 	ft_printmap(*map);
-	/* drawline(mlx, win, 400, 400, 0, 0, 0xFF0000);
+	ft_putmap(*map, mlx, win);
+	drawline(mlx, win, 600, 600, 0, 0, 0xFF0000);
 	while(1)
-		ft_putendl_fd("ok", 1); */
+		sleep(5);
 	return (0); 
 }
