@@ -6,12 +6,14 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/24 20:06:36 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/25 02:56:41 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
+# define WIN_WIDTH 500
+# define WIN_HEIGHT 500
 
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"

@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:44 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/24 23:43:00 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/25 02:56:01 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,10 @@ int **ft_realloc_iarr(int **arr, int *row_size)
 	int	**res;
 	int	pos;
 
-	new_size = *row_size * 2;
+	if (*row_size >= 46340)
+		new_size = 2147483647 - 1;
+	else
+		new_size = *row_size * 2;
 	pos = -1;
 	res = malloc(sizeof(int *) * (new_size + 1));
 	if (!res)
@@ -200,17 +203,18 @@ void	ft_putmap(t_fdfmap map, void *mlx, void *win)
 	int x = -1;
 	int y = -1;
 	int delta;
+	//int zscale;
 	t_segment *original;
 	t_segment *transformed;
 
 
 	original = malloc(sizeof(t_segment));
-	if ((600 - (2*xp)) / map.width < (600 - (2*yp)) / map.height)
-		delta = (600 - (2*xp)) / map.width ;
+	if ((WIN_WIDTH - (2*xp)) / map.width < (WIN_HEIGHT - (2*yp)) / map.height)
+		delta = (WIN_WIDTH - (2*xp)) / map.width ;
 	else
-		delta = (600 - (2*yp)) / map.height;
+		delta = (WIN_HEIGHT - (2*yp)) / map.height;
 	delta /= 2;
-	xp = 300;
+	xp = WIN_WIDTH / 2;
 	while (++y < map.height)
 	{
 		while (++x < map.width)
@@ -239,7 +243,7 @@ void	ft_putmap(t_fdfmap map, void *mlx, void *win)
 			}
 			xp += delta;
 		}
-		xp = 300;
+		xp = WIN_WIDTH / 2;
 		yp += delta;
 		x = -1;
 	}
@@ -254,7 +258,7 @@ int	main(int argc, char **argv)
 	mlx = mlx_init();
 	if (!mlx)
 		return (1);
-	win = mlx_new_window(mlx, 600, 600, "Fdf");
+	win = mlx_new_window(mlx, WIN_WIDTH, WIN_HEIGHT, "Fdf");
 	if (argc != 2)
 		return(ft_putendl_fd("Wrong args. Usage: ./fdf mapfile.fdf", 2), 1);
 	map = parse_map(argv[1]);
