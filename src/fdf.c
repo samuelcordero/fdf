@@ -6,32 +6,17 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:44 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/25 02:56:01 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/25 19:07:17 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 
-int	ft_sqrt(float number)
-{
-	long	i;
-	float	x2;
-	float	y;
-
-	x2 = number * 0.5F;
-	y  = number;
-	i  = * (long *) &y;
-	i  = 0x5f3759df - ( i >> 1 );
-	y  = * (float *) &i;
-	y  = y * ( 1.5F - ( x2 * y * y ) );
-	return 1/y;
-}
-
 void	drawline(void *mlx, void *mlxwin, int x0, int y0, int x1, int y1, int color)
 {
 	double deltaX = x1 - x0; // 10
 	double deltaY = y1 - y0; // 0
-	int pixels = ft_sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 
 	deltaX /= pixels; // 1
 	deltaY /= pixels; // 0
@@ -50,7 +35,7 @@ void	drawsegment(void *mlx, void *mlxwin, t_segment seg, int color)
 {
 	double deltaX = seg.x1 - seg.x0; // 10
 	double deltaY = seg.y1 - seg.y0; // 0
-	int pixels = ft_sqrt((deltaX * deltaX) + (deltaY * deltaY));
+	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 
 	deltaX /= pixels; // 1
 	deltaY /= pixels; // 0
@@ -155,8 +140,7 @@ t_fdfmap	*parse_map(char *file)
 	row = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		exit(1);
-		//return (ft_putendl_fd("Couldn't open specified file", 2), NULL); 
+		return (ft_putendl_fd("Couldn't open specified file", 2), NULL); 
 	res->arr = malloc(sizeof(int *) * (res->height + 1));
 	res->arr[res->height] = NULL;
 	buffer = get_next_line(fd);
@@ -255,16 +239,16 @@ int	main(int argc, char **argv)
 	void		*win;
 	t_fdfmap	*map;
 
+	if (argc != 2)
+		return(ft_putendl_fd("Wrong args. Usage: ./fdf mapfile.fdf", 2), 1);
 	mlx = mlx_init();
 	if (!mlx)
 		return (1);
-	win = mlx_new_window(mlx, WIN_WIDTH, WIN_HEIGHT, "Fdf");
-	if (argc != 2)
-		return(ft_putendl_fd("Wrong args. Usage: ./fdf mapfile.fdf", 2), 1);
+	win = mlx_new_window(mlx, WIN_WIDTH, WIN_HEIGHT, argv[1]);
 	map = parse_map(argv[1]);
-	ft_printf("height: %i, width: %i\n", map->height, map->width);
-	if (!map->arr)
+	if (!map || !map->arr)
 		return(ft_putendl_fd("Couldn't load map", 2), 1);
+	ft_printf("height: %i, width: %i\n", map->height, map->width);
 	ft_printmap(*map);
 	ft_putmap(*map, mlx, win);
 	while(1)

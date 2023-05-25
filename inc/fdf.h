@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/25 14:46:41 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/25 19:03:32 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # define WIN_WIDTH 500
 # define WIN_HEIGHT 500
 
+# include <math.h>
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 
