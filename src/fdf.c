@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:44 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/25 19:07:17 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/05/25 21:49:03 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,20 +76,27 @@ int	ft_array_len(char **arr)
 	return (counter);
 }
 
-void	ft_carr_to_iarr(t_fdfmap *map, char **carr, int row)
+int		ft_carr_to_iarr(t_fdfmap *map, char **carr, int row)
 {
 	int	pos;
+	int	max;
 
 	pos = -1;
+	max = 0;
 	if (!carr)
 		return (NULL);
 	if (!row)
 		map->width = ft_array_len(carr);
 	else if (map->width != ft_array_len(carr))
-		exit(1);
+		ft_printf("weird");
 	map->arr[row] = malloc(sizeof(int) * (map->width));
 	while (++pos < map->width)
+	{
 		map->arr[row][pos] = ft_atoi(carr[pos]);
+		if (max < abs(map->arr[row][pos]))
+			max = abs(map->arr[row][pos]);
+	}
+	return (max);
 }
 
 void	ft_free_array(void **array) {
@@ -134,9 +141,11 @@ t_fdfmap	*parse_map(char *file)
 	int		row;
 	char	*buffer;
 	char	**splitted_buffer;
+	int		tmpmax;
 
 	res = malloc(sizeof(t_fdfmap));
 	res->height = 8;
+	res->max_abs = 0;
 	row = 0;
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
@@ -147,7 +156,9 @@ t_fdfmap	*parse_map(char *file)
 	while (buffer)
 	{
 		splitted_buffer = ft_split(buffer, ' ');
-		ft_carr_to_iarr(res, splitted_buffer, row);
+		tmpmax = ft_carr_to_iarr(res, splitted_buffer, row);
+		if (tmpmax > res->max_abs)
+			res->max_abs = tmpmax;
 		ft_free_array((void **) splitted_buffer);
 		free(buffer);
 		row++;
@@ -168,7 +179,7 @@ void	ft_printmap(t_fdfmap map)
 
 	x = -1;
 	y = x;
-	while(++y < map.height)
+	while (++y < map.height)
 	{
 		while (++x < map.width)
 		{
@@ -186,18 +197,20 @@ void	ft_putmap(t_fdfmap map, void *mlx, void *win)
 	int yp = 10;
 	int x = -1;
 	int y = -1;
-	int delta;
-	//int zscale;
+	float delta;
+	float zscale;
 	t_segment *original;
 	t_segment *transformed;
 
-
 	original = malloc(sizeof(t_segment));
 	if ((WIN_WIDTH - (2*xp)) / map.width < (WIN_HEIGHT - (2*yp)) / map.height)
-		delta = (WIN_WIDTH - (2*xp)) / map.width ;
+		delta = (WIN_WIDTH - (2*xp)) / map.width;
 	else
 		delta = (WIN_HEIGHT - (2*yp)) / map.height;
-	delta /= 2;
+	zscale = delta;
+	delta *= 0.6;
+	while (zscale * map.max_abs >= WIN_HEIGHT / 2)
+		zscale *= 0.9;
 	xp = WIN_WIDTH / 2;
 	while (++y < map.height)
 	{
@@ -207,21 +220,21 @@ void	ft_putmap(t_fdfmap map, void *mlx, void *win)
 			original->y0 = yp;
 			original->x1 = xp;
 			original->y1 = yp + delta;
-			if(y < map.height - 1)
+			if (y < map.height - 1)
 			{
 				transformed = ft_transform_segment(*original);
-				transformed->y0 -= (map.arr[y][x] * delta / 4);
-				transformed->y1 -= (map.arr[y + 1][x] * delta / 4);
+				transformed->y0 -= (map.arr[y][x] * zscale);
+				transformed->y1 -= (map.arr[y + 1][x] * zscale);
 				drawsegment(mlx, win, *transformed, 0xFFFFFF);
 				free(transformed);
 			}
 			original->x1 = xp + delta;
 			original->y1 = yp;
-			if(x < map.width - 1)
+			if (x < map.width - 1)
 			{
 				transformed = ft_transform_segment(*original);
-				transformed->y0 -= (map.arr[y][x] * delta / 4);
-				transformed->y1 -= (map.arr[y][x + 1] * delta / 4);
+				transformed->y0 -= (map.arr[y][x] * zscale);
+				transformed->y1 -= (map.arr[y][x + 1] * zscale);
 				drawsegment(mlx, win, *transformed, 0xFFFFFF);
 				free(transformed);
 			}
@@ -241,15 +254,15 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return(ft_putendl_fd("Wrong args. Usage: ./fdf mapfile.fdf", 2), 1);
+	map = parse_map(argv[1]);
+	if (!map || !map->arr)
+		return(ft_putendl_fd("Couldn't load map", 2), 1);
+	//ft_printf("height: %i, width: %i\n", map->height, map->width);
+	//ft_printmap(*map);
 	mlx = mlx_init();
 	if (!mlx)
 		return (1);
 	win = mlx_new_window(mlx, WIN_WIDTH, WIN_HEIGHT, argv[1]);
-	map = parse_map(argv[1]);
-	if (!map || !map->arr)
-		return(ft_putendl_fd("Couldn't load map", 2), 1);
-	ft_printf("height: %i, width: %i\n", map->height, map->width);
-	ft_printmap(*map);
 	ft_putmap(*map, mlx, win);
 	while(1)
 		sleep(5);
