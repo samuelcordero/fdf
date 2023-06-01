@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:44 by sacorder          #+#    #+#             */
-/*   Updated: 2023/05/25 21:49:03 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/06/01 17:30:53 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,108 @@ void	ft_putmap(t_fdfmap map, void *mlx, void *win)
 		yp += delta;
 		x = -1;
 	}
+}int apply_kernel(int** img, int x, int y)
+{
+    int red = 0;
+    int green = 0;
+    int blue = 0;
+    int pixel_counter = 0;
+	int pixel;
+	int	weight;
+
+    for (int j = y - 2; j < y + 2 && j < WIN_HEIGHT; ++j)
+    {
+        for (int i = x - 2; i < x + 2 && i < WIN_WIDTH; ++i)
+        {
+            if (i >= 0 && j >= 0)
+            {
+				weight = 1;
+				if (i == x && j == y)
+					weight = 2;
+                pixel = img[j][i];
+                red += (pixel >> 16) * weight & 0xFF;
+                green += (pixel >> 8) * weight & 0xFF;
+                blue += pixel * weight & 0xFF;
+                ++pixel_counter;
+            }
+        }
+    }
+
+    red /= pixel_counter;
+    green /= pixel_counter;
+    blue /= pixel_counter;
+
+    return (red << 16) | (green << 8) | blue;
 }
+
+int	**antialiasing(t_fdfmap *fdf)
+{
+	int	**res;
+	int i;
+	int	j;
+
+	res = NULL;
+	i = -1;
+	if (!fdf)
+		return (res);
+	res = malloc(sizeof(int *) * WIN_HEIGHT);
+	if (!res)
+		return(res);
+	while (++i < WIN_HEIGHT)
+	{
+		res[i] = malloc(sizeof(int) * WIN_WIDTH);
+		if (!res[i])
+			return (res);
+	}
+	j = -1;
+	while (++j < WIN_HEIGHT)
+	{
+		i = -1;
+		while (++i < WIN_WIDTH)
+		{
+			res[j][i] = apply_kernel(fdf->img, i, j);
+		}
+	}
+	return (res);
+}
+
+void	ft_putimg(void *mlx, void *win, int **img)
+{
+	void *image = mlx_new_image(mlx, WIN_WIDTH, WIN_HEIGHT);
+	int pixel_bits;
+	int line_bytes;
+	int color;
+	int endian;
+	char *buffer = mlx_get_data_addr(image, &pixel_bits, &line_bytes, &endian);
+
+	
+
+	for(int y = 0; y < WIN_HEIGHT; ++y)
+		for(int x = 0; x < WIN_WIDTH; ++x)
+		{
+			color = img[y][x];
+			if (pixel_bits != 32)
+  	  			color = mlx_get_color_value(mlx, color);
+		    int pixel = (y * line_bytes) + (x * 4);
+
+    		if (endian == 1)        // Most significant (Alpha) byte first
+    		{
+       			buffer[pixel + 0] = (color >> 24);
+        		buffer[pixel + 1] = (color >> 16) & 0xFF;
+		        buffer[pixel + 2] = (color >> 8) & 0xFF;
+        		buffer[pixel + 3] = (color) & 0xFF;
+		    }
+    		else if (endian == 0)   // Least significant (Blue) byte first
+		    {
+        		buffer[pixel + 0] = (color) & 0xFF;
+		      buffer[pixel + 1] = (color >> 8) & 0xFF;
+		        buffer[pixel + 2] = (color >> 16) & 0xFF;
+        		buffer[pixel + 3] = (color >> 24);
+		    }
+		}
+	mlx_put_image_to_window(mlx, win, image, 0, 0);
+}
+
 
 int	main(int argc, char **argv)
 {
@@ -254,16 +355,31 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 		return(ft_putendl_fd("Wrong args. Usage: ./fdf mapfile.fdf", 2), 1);
-	map = parse_map(argv[1]);
+	 map = parse_map(argv[1]);
 	if (!map || !map->arr)
 		return(ft_putendl_fd("Couldn't load map", 2), 1);
 	//ft_printf("height: %i, width: %i\n", map->height, map->width);
 	//ft_printmap(*map);
+	map->img = malloc(sizeof(int *) * WIN_HEIGHT);
+	for (int i = 0; i < WIN_HEIGHT; i++)
+		map->img[i] = malloc(sizeof(int) * WIN_WIDTH);
+	for (int j = 0; j < WIN_HEIGHT; j++)
+		for (int i = 0; i < WIN_WIDTH; i++)
+		{
+			if (j >= i)
+				map->img[j][i] = 0xFF0000;
+			else 
+				map->img[j][i] = 0x0000FF;
+		}
+	for (int j = 0; j < WIN_HEIGHT && j < WIN_WIDTH; j++)
+		map->img[WIN_HEIGHT - 1 - j][j] = 0xFFFFFF; 
+	map->processed_img = antialiasing(map);
 	mlx = mlx_init();
 	if (!mlx)
 		return (1);
 	win = mlx_new_window(mlx, WIN_WIDTH, WIN_HEIGHT, argv[1]);
-	ft_putmap(*map, mlx, win);
+	/* ft_putmap(*map, mlx, win); */
+	ft_putimg(mlx, win, map->processed_img);
 	while(1)
 		sleep(5);
 	return (0); 
