@@ -6,13 +6,13 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/05/25 19:03:44 by sacorder         ###   ########.fr        #
+#    Updated: 2023/05/29 19:03:33 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT = libft/libft.a
-MINILIBX = minilibx/mlx.a
-LIB = -L libft -l:libft.a -L minilibx-linux -lmlx -lXext -lX11 -lm
+MINILIBX = minilibx_macos/mlx.a
+LIB = -L libft -lft -L minilibx_macos -lmlx -lm
 NAME = fdf
 #FLAGS = -Wall -Wextra -Werror
 INCLUDE = inc/fdf.h 
@@ -31,7 +31,7 @@ else ifeq ($(UNAME), FreeBSD)
 else
 	#Linux and others...
 	CC	= gcc
-	LIB += -lbsd
+    #LIB += -lbsd
 endif
 
 all: $(NAME)
@@ -40,9 +40,9 @@ $(LIBFT):
 	@make bonus -C ./libft
 
 $(MINILIBX):
-	@make -C ./minilibx-linux
+	@make -C ./minilibx_macos
 	
-$(NAME): $(LIBFT) $(OBJ) $(INCLUDE) $(MINILIBX)
+$(NAME): $(MINILIBX) $(LIBFT) $(OBJ) $(INCLUDE) 
 	$(CC) -o $(NAME) $(OBJ) $(LIB)
 
 bonus: $(LIBFT) $(OBJBONUS) $(INCLUDE) $(MINILIBX)
