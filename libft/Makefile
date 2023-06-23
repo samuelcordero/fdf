@@ -6,7 +6,7 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/20 18:04:20 by sacorder          #+#    #+#              #
-#    Updated: 2023/05/22 13:51:57 by sacorder         ###   ########.fr        #
+#    Updated: 2023/06/23 14:58:09 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRCBONUS = ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c ft_lstclear_bonus.c ft
 OBJBONUS = $(SRCBONUS:.c=.o)
 OBJ = $(SRC:.c=.o)
 RM=/bin/rm -f
+CC=gcc
 
 all: $(NAME)
 

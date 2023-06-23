@@ -6,11 +6,81 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/06/20 13:22:13 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/06/23 15:16:42 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
+
+void	ft_free_array(void **array) {
+	int pos = 0;
+
+	if (!array)
+		exit(-1);
+	while (array[pos]) {
+		free(array[pos]);
+		array[pos] = NULL;
+		pos++;
+	}
+	free(array);
+}
+
+static t_point ft_str2point(int x, int y, char *str)
+{
+	t_point	this;
+	char	*splited;
+
+	splited = ft_split(str, ",")
+	if (!splited)
+		return (NULL);
+	this.x = x;
+	this.y = y;
+	this.z = ft_atoi(split[0]);
+	if (splited[1])
+		this.color = ft_atoibase(splited[1]);
+	ft_free_array(splited);
+	return (this);
+}
+
+static int	ft_array_len(char **arr)
+{
+	int counter;
+
+	counter = 0;
+	if (!arr)
+		return (counter);
+	while (arr[counter])
+		++counter;
+	return (counter);
+}
+
+static void		ft_str2maprow(t_map *map, char *str, int row)
+{
+	int	pos;
+	char **splited;
+
+	pos = -1;
+	max = 0;
+	if (!str)
+		return (NULL);
+	splited = ft_split(str, " ");
+	if (!splited)
+		return (NULL);
+	if (!row)
+		map->width = ft_array_len(splited);
+	else if (map->width != ft_array_len(splited))
+		ft_printf("weird");
+	map->arr[row] = malloc(sizeof(int) * (map->width));
+	while (++pos < map->width)
+	{
+		map->arr[row][pos] = ft_str2point(pos, row, splited[pos]);
+		if (map->max_z < map->arr[row][pos]->z)
+			map->max_z = map->arr[row][pos]->z;
+		if (map->min_z > map->arr[row][pos]->z)
+			map->min_z = map->arr[row][pos]->z;
+	}
+	ft_free_array(splited);
+}
 
 static int **ft_realloc_map(t_point **arr, int *row_size)
 {

@@ -6,13 +6,13 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/05/29 19:03:33 by sacorder         ###   ########.fr        #
+#    Updated: 2023/06/23 14:57:29 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT = libft/libft.a
-MINILIBX = minilibx_macos/mlx.a
-LIB = -L libft -lft -L minilibx_macos -lmlx -lm
+MINILIBX = minilibx-linux/mlx.a
+LIB = -L libft -lft -L minilibx-linux -lmlx -lm
 NAME = fdf
 #FLAGS = -Wall -Wextra -Werror
 INCLUDE = inc/fdf.h 
@@ -40,7 +40,7 @@ $(LIBFT):
 	@make bonus -C ./libft
 
 $(MINILIBX):
-	@make -C ./minilibx_macos
+	@make -C ./minilibx-linux
 	
 $(NAME): $(MINILIBX) $(LIBFT) $(OBJ) $(INCLUDE) 
 	$(CC) -o $(NAME) $(OBJ) $(LIB)
