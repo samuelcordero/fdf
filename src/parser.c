@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/06/25 18:48:08 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/06/25 19:50:05 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ static t_point ft_str2point(int x, int y, char *str)
 	this.color = 0xFFFFFF;
 	if (splited[1])
 		this.color = ft_atoi_base(splited[1], "0123456789ABCDF");
-	ft_free_array((void **) splited);
+	//ft_free_array((void **) splited);
 	return (this);
 }
 
@@ -173,9 +173,11 @@ static void		ft_str2maprow(t_map *map, char *str, int row)
 		map->width = ft_array_len(splited);
 	else if (map->width != ft_array_len(splited))
 		ft_printf("weird");
-	map->arr[row] = malloc(sizeof(int) * (map->width));
+	map->arr[row] = malloc(sizeof(t_point *) * (map->width));
+	ft_printf("map width: %i\n", map->width);
 	while (++pos < map->width)
 	{
+		ft_printf("parsing %s \n", splited[pos]);
 		map->arr[row][pos] = ft_str2point(pos, row, splited[pos]);
 		if (map->max_z < map->arr[row][pos].z)
 			map->max_z = map->arr[row][pos].z;
@@ -191,12 +193,12 @@ static t_point **ft_realloc_map(t_point **arr, int *row_size)
 	t_point	**res;
 	int	pos;
 
-	if (*row_size >= 46340)
+	if (*row_size >= 2147483647/2)
 		new_size = 2147483647 - 1;
 	else
 		new_size = *row_size * 2;
 	pos = -1;
-	res = malloc(sizeof(t_point *) * (new_size + 1));
+	res = malloc(sizeof(t_point **) * (new_size + 1));
 	if (!res)
 		return(NULL);
 	while (++pos < *row_size)
@@ -221,12 +223,12 @@ t_map	*parse_map(int fd)
 	res->min_z = 0;
 	res->max_z = 0;
 	row = 0;
-	res->arr = malloc(sizeof(t_point *) * (res->height + 1));
+	res->arr = malloc(sizeof(t_point **) * (res->height + 1));
 	res->arr[res->height] = NULL;
 	buffer = get_next_line(fd);
 	while (buffer)
 	{
-		//buffer to map row and pass & setting of max and min z each row
+		ft_str2maprow(res, buffer, row);
 		free(buffer);
 		row++;
 		buffer = get_next_line(fd);
