@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/06/20 13:20:29 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/06/25 18:55:32 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_map{
 
 typedef struct s_fdf{
 	t_camera cam;
-	t_map map;
+	t_map *map;
 	int **img;
 	int **processed_img;
 } t_fdf;
@@ -57,5 +57,6 @@ t_point	ft_rotate_x(t_point point, double angle);
 t_point	ft_rotate_y(t_point point, double angle);
 t_point	ft_rotate_z(t_point point, double angle);
 t_point ft_project_iso(t_point point);
+t_map	*parse_map(int fd);
 
 #endif

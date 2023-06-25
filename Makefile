@@ -6,7 +6,7 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/06/23 14:57:29 by sacorder         ###   ########.fr        #
+#    Updated: 2023/06/25 18:56:35 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,8 @@ LIB = -L libft -lft -L minilibx-linux -lmlx -lm
 NAME = fdf
 #FLAGS = -Wall -Wextra -Werror
 INCLUDE = inc/fdf.h 
-SRC = src/fdf.c 
-SRCBONUS = src/fdf.c 
+SRC = src/main.c src/parser.c src/transform.c src/draw.c
+SRCBONUS = src/main.c src/parser.c src/transform.c src/draw.c
 OBJ = $(SRC:.c=.o)
 OBJBONUS = $(SRCBONUS:.c=.o)
 RM=/bin/rm -f
@@ -31,7 +31,7 @@ else ifeq ($(UNAME), FreeBSD)
 else
 	#Linux and others...
 	CC	= gcc
-    #LIB += -lbsd
+    LIB += -lbsd
 endif
 
 all: $(NAME)
