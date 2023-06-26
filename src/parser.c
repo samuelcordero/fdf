@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/06/25 19:50:05 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/06/26 02:37:52 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,37 +115,6 @@ int		ft_atoi_base(char *str, char *base)
 	return (result);
 }
 
-void	ft_free_array(void **array) {
-	int pos = 0;
-
-	if (!array)
-		exit(-1);
-	while (array[pos]) {
-		free(array[pos]);
-		array[pos] = NULL;
-		pos++;
-	}
-	free(array);
-}
-
-static t_point ft_str2point(int x, int y, char *str)
-{
-	t_point	this;
-	char	**splited;
-
-	splited = ft_split(str, ',');
-	if (!splited)
-		return (this);
-	this.x = x;
-	this.y = y;
-	this.z = ft_atoi(splited[0]);
-	this.color = 0xFFFFFF;
-	if (splited[1])
-		this.color = ft_atoi_base(splited[1], "0123456789ABCDF");
-	//ft_free_array((void **) splited);
-	return (this);
-}
-
 static int	ft_array_len(char **arr)
 {
 	int counter;
@@ -156,6 +125,38 @@ static int	ft_array_len(char **arr)
 	while (arr[counter])
 		++counter;
 	return (counter);
+}
+
+void	ft_free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	if (!array)
+		exit(-1);
+	while (array[i] != NULL) {
+		free(array[i]);
+		++i;
+	}
+	free(array);
+}
+
+static t_point ft_str2point(int x, int y, char *str)
+{
+	t_point	this;
+	char	**splited;
+
+	splited = ft_split(str, ',');
+	this.z = 0;
+	this.x = x;
+	this.y = y;
+	if (splited)
+		this.z = ft_atoi(splited[0]);
+	this.color = 0xFFFFFF;
+	if (splited[1])
+		this.color = ft_atoi_base(splited[1], "0123456789ABCDF");
+	//ft_free_array(splited);
+	return (this);
 }
 
 static void		ft_str2maprow(t_map *map, char *str, int row)
@@ -171,8 +172,8 @@ static void		ft_str2maprow(t_map *map, char *str, int row)
 		return ;
 	if (!row)
 		map->width = ft_array_len(splited);
-	else if (map->width != ft_array_len(splited))
-		ft_printf("weird");
+	else if (map->width > ft_array_len(splited))
+		map->width = ft_array_len(splited);
 	map->arr[row] = malloc(sizeof(t_point *) * (map->width));
 	ft_printf("map width: %i\n", map->width);
 	while (++pos < map->width)
@@ -184,10 +185,10 @@ static void		ft_str2maprow(t_map *map, char *str, int row)
 		if (map->min_z > map->arr[row][pos].z)
 			map->min_z = map->arr[row][pos].z;
 	}
-	ft_free_array((void **) splited);
+	//ft_free_array(splited);
 }
 
-static t_point **ft_realloc_map(t_point **arr, int *row_size)
+static t_point **ft_realloc_maparr(t_point **arr, int *row_size)
 {
 	int	new_size;
 	t_point	**res;
@@ -202,7 +203,10 @@ static t_point **ft_realloc_map(t_point **arr, int *row_size)
 	if (!res)
 		return(NULL);
 	while (++pos < *row_size)
+	{
 		res[pos] = arr[pos];
+		//free(arr[pos]);
+	}
 	free(arr);
 	*row_size = new_size;
 	res[new_size] = NULL;
@@ -214,7 +218,6 @@ t_map	*parse_map(int fd)
 	t_map	*res;
 	int		row;
 	char	*buffer;
-	int		tmpmax;
 
 	if (fd < 0)
 		return (NULL);
@@ -233,7 +236,7 @@ t_map	*parse_map(int fd)
 		row++;
 		buffer = get_next_line(fd);
 		if (row == res->height && buffer)
-			res->arr = ft_realloc_map(res->arr, &res->height);
+			res->arr = ft_realloc_maparr(res->arr, &res->height);
 	}
 	res->arr[row] = NULL;
 	res->height = row;

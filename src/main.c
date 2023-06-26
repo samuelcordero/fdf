@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/06/25 19:58:21 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/06/26 02:17:21 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	ft_printmap(t_map *map)
 		ft_printf("------map width: %i------\n", map->width);
 		++j;
 	}
+	ft_printf("------map max and min:  %i %i------\n", map->max_z, map->min_z);
 }
 
 int	main(int argc, char **argv)
 {
 	t_fdf fdf;
 	int fd;
-	t_map *transformed;
 
 	if (argc != 2)
 		return (1);
@@ -48,7 +48,7 @@ int	main(int argc, char **argv)
 	fdf.cam.alpha = 1.6;
 	fdf.cam.beta = 1.6;
 	fdf.cam.gamma = 1.6;
-	transformed = ft_transform(fdf);
-
+	//transformed = ft_transform(fdf);
+	system("sleep 100");
 	return (0);
 }

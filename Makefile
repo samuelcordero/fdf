@@ -6,7 +6,7 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/06/25 19:10:47 by sacorder         ###   ########.fr        #
+#    Updated: 2023/06/26 02:04:02 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ LIBFT = libft/libft.a
 MINILIBX = minilibx-linux/mlx.a
 LIB = -L libft -lft -L minilibx-linux -lmlx -lm
 NAME = fdf
-FLAGS = -g #-Wall -Wextra -Werror
+FLAGS = -g -Wall -Wextra -Werror
 INCLUDE = inc/fdf.h 
 SRC = src/main.c src/parser.c src/transform.c #src/draw.c
 SRCBONUS = src/main.c src/parser.c src/transform.c #src/draw.c
