@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/06/27 01:13:15 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:43:19 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,7 @@ void ft_transform(t_fdf *fdf)
 		while (i < fdf->map->width)
 		{
 			printf("Before rotationx: %f, y: %f, z: %f, color: %i\n", fdf->map->arr[j][i].x, fdf->map->arr[j][i].y, fdf->map->arr[j][i].z, fdf->map->arr[j][i].color);
-			ft_rotate_x(&fdf->map->arr[j][i], fdf->cam.alpha);
-			ft_rotate_y(&fdf->map->arr[j][i], fdf->cam.beta);
-			ft_rotate_z(&fdf->map->arr[j][i], fdf->cam.gamma);
+			//apply rotation form angles in camera
 			printf("After rotationx: %f, y: %f, z: %f, color: %i\n", fdf->map->arr[j][i].x, fdf->map->arr[j][i].y, fdf->map->arr[j][i].z, fdf->map->arr[j][i].color);
 			++i;
 		}
@@ -68,10 +66,17 @@ int	main(int argc, char **argv)
 	fdf.map = parse_map(fd);
 	ft_printmap(fdf.map);
 	fdf.cam.zoom = 1;
-	fdf.cam.alpha = 1.6;
-	fdf.cam.beta = 1.6;
-	fdf.cam.gamma = 1.6;
-	ft_transform(&fdf);
-	//system("sleep 100");
+	fdf.cam.alpha1 = 0;
+	fdf.cam.alpha2 = 0;
+	fdf.mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "Campo de hierro", 1);
+	if (!fdf.mlx)
+		return (1);
+	fdf.img = mlx_new_image(fdf.mlx, WIN_WIDTH, WIN_HEIGHT);
+	//ft_transform(&fdf);
+	//draw map in image
+	//draw menu
+	mlx_key_hook(fdf.mlx, &keyboard_hook, (void *)&fdf);
+	mlx_mouse_hook(fdf.mlx, &mouse_hook, (void *)&fdf);
+	mlx_loop(fdf.mlx);
 	return (0);
 }
