@@ -6,7 +6,7 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/06/28 17:36:29 by sacorder         ###   ########.fr        #
+#    Updated: 2023/07/13 16:57:12 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIB = -L libft -lft -L minilibx-linux -lmlx -lm
 NAME = fdf
 FLAGS = -g -Wall -Wextra -Werror
 INCLUDE = inc/fdf.h 
-SRC = src/main.c src/parser.c src/transform.c src/mousehooks.c src/kbhooks.c src/help.c #src/draw.c
+SRC = src/main.c src/parser.c src/transform.c src/help.c #src/draw.c src/mousehooks.c src/kbhooks.c
 OBJ = $(SRC:.c=.o)
 RM=/bin/rm -f
 

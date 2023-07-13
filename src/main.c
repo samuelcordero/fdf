@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/06/28 17:43:19 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/13 16:56:07 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,25 @@ int	main(int argc, char **argv)
 		return (1);
 	fdf.map = parse_map(fd);
 	ft_printmap(fdf.map);
-	fdf.cam.zoom = 1;
-	fdf.cam.alpha1 = 0;
-	fdf.cam.alpha2 = 0;
-	fdf.mlx = mlx_init(WIN_WIDTH, WIN_HEIGHT, "Campo de hierro", 1);
+	fdf.mlx = mlx_init();
+	fdf.win_ptr = mlx_new_window(fdf.mlx, WIN_WIDTH, WIN_HEIGHT,
+                                "fdf");
+    if (fdf.win_ptr == NULL)
+    {
+        free(fdf.win_ptr);
+        return (-1);
+	}
 	if (!fdf.mlx)
 		return (1);
-	fdf.img = mlx_new_image(fdf.mlx, WIN_WIDTH, WIN_HEIGHT);
-	//ft_transform(&fdf);
-	//draw map in image
-	//draw menu
-	mlx_key_hook(fdf.mlx, &keyboard_hook, (void *)&fdf);
-	mlx_mouse_hook(fdf.mlx, &mouse_hook, (void *)&fdf);
+	fdf.img.mlx_img = mlx_new_image(fdf.mlx, WIN_WIDTH, WIN_HEIGHT);
+
+/* 	     //Setup hooks 
+    mlx_loop_hook(data.mlx_ptr, &render, &data);
+    mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
+*/
+
 	mlx_loop(fdf.mlx);
+	mlx_destroy_display(fdf.mlx);
+	free(fdf.mlx);
 	return (0);
 }
