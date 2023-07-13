@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/13 16:39:09 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/13 18:39:33 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ typedef struct s_fdf{
 	t_img	img;
 } t_fdf;
 
+int		render(t_fdf *fdf);
 void	ft_rotate_x(t_point *point, double angle);
 void	ft_rotate_y(t_point *point, double angle);
 void	ft_rotate_z(t_point *point, double angle);

@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/13 16:56:07 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/13 19:22:25 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,10 @@ int	main(int argc, char **argv)
 	if (!fdf.mlx)
 		return (1);
 	fdf.img.mlx_img = mlx_new_image(fdf.mlx, WIN_WIDTH, WIN_HEIGHT);
-
+	fdf.img.addr = mlx_get_data_addr(fdf.img.mlx_img, &fdf.img.bpp, &fdf.img.line_len, &fdf.img.endian);
+	mlx_loop_hook(fdf.mlx, &render, &fdf);
+	
 /* 	     //Setup hooks 
-    mlx_loop_hook(data.mlx_ptr, &render, &data);
     mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
 */
 
