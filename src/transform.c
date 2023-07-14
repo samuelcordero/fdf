@@ -6,13 +6,39 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:36:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/06/27 00:38:52 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:54:05 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 
-void ft_rotate_x(t_point *point, double angle)
+static void	ft_project_point_iso(t_point *point, float tile_size)
+{
+	float	prev_x;
+	int		half_width;
+
+	prev_x = point->x;
+	half_width = WIN_WIDTH / 2;
+	point->x = ((prev_x - point->y) * (tile_size)) + half_width;
+	point->y = (prev_x + point->y) * (tile_size / 2) + point->z * 10;
+}
+
+void	ft_project_iso(t_map *map)
+{
+	int	i;
+	int	j;
+
+	j = -1;
+	while (++j < map->height)
+	{
+		i = -1;
+		while (++i < map->width)
+			ft_project_point_iso(&map->arr[j][i], map->h_tile_size);
+	}
+	printf("project done\n");
+}
+
+/* void ft_rotate_x(t_point *point, double angle)
 {
 	int prev_y;
 	int	prev_z;
@@ -43,14 +69,4 @@ void ft_rotate_z(t_point *point, double angle)
 	prev_y = point->y;
 	point->x = (cos(angle) * prev_x) - (sin(angle) * prev_y);
 	point->y = (sin(angle) * prev_x) + (cos(angle) * prev_y);
-}
-
-t_point ft_project_iso(t_point point)
-{
-	t_point projected;
-
-	projected.x = point.x*10;
-	projected.y = (point.y * 10) + (point.z * 10);
-	projected.color = point.color;
-	return (projected);
-}
+} */

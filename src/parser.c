@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/06/27 00:58:23 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:51:20 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,5 +240,10 @@ t_map	*parse_map(int fd)
 	}
 	res->arr[row] = NULL;
 	res->height = row;
+	if (WIN_HEIGHT / res->height > WIN_WIDTH / res->width)
+		res->h_tile_size = (float) WIN_WIDTH / (float) res->width;
+	else
+		res->h_tile_size = (float) WIN_HEIGHT / (float) res->height;
+	res->h_tile_size /= 2;	
 	return (res);
 }

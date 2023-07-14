@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/13 19:22:25 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:38:26 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	main(int argc, char **argv)
 		return (1);
 	fdf.map = parse_map(fd);
 	ft_printmap(fdf.map);
+	ft_project_iso(fdf.map);
 	fdf.mlx = mlx_init();
 	fdf.win_ptr = mlx_new_window(fdf.mlx, WIN_WIDTH, WIN_HEIGHT,
                                 "fdf");
@@ -76,7 +77,11 @@ int	main(int argc, char **argv)
 	if (!fdf.mlx)
 		return (1);
 	fdf.img.mlx_img = mlx_new_image(fdf.mlx, WIN_WIDTH, WIN_HEIGHT);
+	if (!fdf.img.mlx_img)
+		return (1);
 	fdf.img.addr = mlx_get_data_addr(fdf.img.mlx_img, &fdf.img.bpp, &fdf.img.line_len, &fdf.img.endian);
+	if (!fdf.img.addr)
+		return (1);
 	mlx_loop_hook(fdf.mlx, &render, &fdf);
 	
 /* 	     //Setup hooks 

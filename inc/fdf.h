@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/13 18:39:33 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/14 14:36:39 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_map{
 	int height;
 	float max_z;
 	float min_z;
+	float h_tile_size;
 } t_map;
 
 typedef struct s_fdf{
@@ -73,10 +74,7 @@ typedef struct s_fdf{
 } t_fdf;
 
 int		render(t_fdf *fdf);
-void	ft_rotate_x(t_point *point, double angle);
-void	ft_rotate_y(t_point *point, double angle);
-void	ft_rotate_z(t_point *point, double angle);
-t_point ft_project_iso(t_point point);
+void	ft_project_iso(t_map *map);
 t_map	*parse_map(int fd);
 void	mouse_hook(int button, int x, int y, void *param);
 void	keyboard_hook(int keycode, void *param);
