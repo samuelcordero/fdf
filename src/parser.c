@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/14 14:51:20 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:24:46 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ static t_point ft_str2point(int x, int y, char *str)
 {
 	t_point	this;
 	char	**splited;
+	int		color;
 
 	splited = ft_split(str, ',');
 	this.z = 0;
@@ -154,7 +155,13 @@ static t_point ft_str2point(int x, int y, char *str)
 		this.z = ft_atoi(splited[0]);
 	this.color = 0xFFFFFF;
 	if (splited[1])
-		this.color = ft_atoi_base(splited[1], "0123456789ABCDF");
+	{
+		color = ft_atoi_base(splited[1], "0123456789ABCDEF");
+		if (!color)
+			this.color = ft_atoi_base(splited[1], "0123456789abcdef");
+		else
+			this.color = color;
+	}
 	ft_free_array(splited);
 	return (this);
 }
@@ -175,10 +182,8 @@ static void		ft_str2maprow(t_map *map, char *str, int row)
 	else if (map->width > ft_array_len(splited))
 		map->width = ft_array_len(splited);
 	map->arr[row] = malloc(sizeof(t_point) * (map->width));
-	ft_printf("map width: %i\n", map->width);
 	while (++pos < map->width)
 	{
-		ft_printf("parsing %s \n", splited[pos]);
 		map->arr[row][pos] = ft_str2point(pos, row, splited[pos]);
 		if (map->max_z < map->arr[row][pos].z)
 			map->max_z = map->arr[row][pos].z;
@@ -203,10 +208,7 @@ static t_point **ft_realloc_maparr(t_point **arr, int *row_size)
 	if (!res)
 		return(NULL);
 	while (++pos < *row_size)
-	{
 		res[pos] = arr[pos];
-		//free(arr[pos]);
-	}
 	free(arr);
 	*row_size = new_size;
 	res[new_size] = NULL;
@@ -240,10 +242,9 @@ t_map	*parse_map(int fd)
 	}
 	res->arr[row] = NULL;
 	res->height = row;
-	if (WIN_HEIGHT / res->height > WIN_WIDTH / res->width)
-		res->h_tile_size = (float) WIN_WIDTH / (float) res->width;
+	if ((float) WIN_HEIGHT / (float) res->height > (float) WIN_WIDTH / (float) res->width)
+		res->h_tile_size =  0.5 * (float) (WIN_WIDTH - 60) / (float) res->width;
 	else
-		res->h_tile_size = (float) WIN_HEIGHT / (float) res->height;
-	res->h_tile_size /= 2;	
+		res->h_tile_size = 0.8 * (float) (WIN_HEIGHT - 60) / (float) res->height;
 	return (res);
 }

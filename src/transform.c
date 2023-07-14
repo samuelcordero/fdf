@@ -6,13 +6,13 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:36:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/14 14:54:05 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:26:22 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 
-static void	ft_project_point_iso(t_point *point, float tile_size)
+static void	ft_project_point_iso(t_point *point, float tile_size, float height_factor)
 {
 	float	prev_x;
 	int		half_width;
@@ -20,22 +20,29 @@ static void	ft_project_point_iso(t_point *point, float tile_size)
 	prev_x = point->x;
 	half_width = WIN_WIDTH / 2;
 	point->x = ((prev_x - point->y) * (tile_size)) + half_width;
-	point->y = (prev_x + point->y) * (tile_size / 2) + point->z * 10;
+	point->y = 30 + (((prev_x + point->y) * (tile_size) - (point->z * height_factor)) / 2);
 }
 
 void	ft_project_iso(t_map *map)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	float	height_factor;
 
 	j = -1;
+	if (map->min_z * -1 > map->max_z)
+		height_factor = WIN_HEIGHT / map->min_z * -1;
+	else
+		height_factor = WIN_HEIGHT / map->max_z;
+	height_factor /= 8.0;
+	if (isinf(height_factor))
+		height_factor = 1;
 	while (++j < map->height)
 	{
 		i = -1;
 		while (++i < map->width)
-			ft_project_point_iso(&map->arr[j][i], map->h_tile_size);
+			ft_project_point_iso(&map->arr[j][i], map->h_tile_size, height_factor);
 	}
-	printf("project done\n");
 }
 
 /* void ft_rotate_x(t_point *point, double angle)

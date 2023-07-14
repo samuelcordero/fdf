@@ -6,14 +6,14 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/14 14:36:39 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:22:38 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
 # define WIN_WIDTH 1280
-# define WIN_HEIGHT 720
+# define WIN_HEIGHT 960
 
 //key definitions
 

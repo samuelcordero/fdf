@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/14 14:46:40 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:20:52 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 static int interpolate_color(t_point a, t_point b, float total, float remaining)
 {
-	float t;
-	int pr;
-	int pb;
-	int pg;
+	int		pr;
+	int		pb;
+	int		pg;
+	float	t;
 
 	t = remaining / total;
-    pr = (int)(a.color >> 16 & 0xFF) * (1 - t) + (int)(b.color >> 16 & 0xFF) * t;
-    pg = (int)(a.color >> 8 & 0xFF) * (1 - t) + (int)(b.color >> 8 & 0xFF) * t;
-    pb = (int)(a.color & 0xFF) * (1 - t) + (int)(b.color & 0xFF) * t;
+    pr = (int)(a.color >> 16 & 0xFF) * t + (int)(b.color >> 16 & 0xFF) * (1 - t);
+    pg = (int)(a.color >> 8 & 0xFF) * t + (int)(b.color >> 8 & 0xFF) * (1 - t);
+    pb = (int)(a.color & 0xFF) * t + (int)(b.color & 0xFF) * (1 - t);
     return ((pr << 16) | (pg << 8) | pb);
 }
 
@@ -33,6 +33,8 @@ static void	img_pix_put(t_img *img, int x, int y, int color)
 
 	i = img->bpp - 8;
 	pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
+	if (x < 0 || y < 0 || x >= WIN_WIDTH || y >= WIN_HEIGHT)
+		return ;
 	while (i >= 0)
 	{
 		if (img->endian != 0)
@@ -117,8 +119,7 @@ int	render(t_fdf *fdf)
     *(int *)pixel = color;
 } */
 
-/* 
-static void render_line(t_img *img, t_point a, t_point b)
+/* static void render_line(t_img *img, t_point a, t_point b)
 {
     int x0 = (int)a.x;
     int y0 = (int)a.y;
@@ -135,9 +136,7 @@ static void render_line(t_img *img, t_point a, t_point b)
     while (x0 != x1 || y0 != y1) {
         float t = sqrtf((x0 - a.x) * (x0 - a.x) + (y0 - a.y) * (y0 - a.y)) /
                   sqrtf((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
-
-        int pixel_color = 0xFFFFFF;
-		//int pixel_color = interpolate_color(a, b, t);
+		int pixel_color = interpolate_color(a, b, t);
         img_pix_put(img, x0, y0, pixel_color);
         if (2 * err > -dy) {
             err -= dy;
@@ -148,4 +147,4 @@ static void render_line(t_img *img, t_point a, t_point b)
             y0 += sy;
         }
     }
-}*/
+} */

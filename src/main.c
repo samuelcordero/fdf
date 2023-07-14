@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/14 14:38:26 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/14 17:37:21 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	main(int argc, char **argv)
 	if (fd < 0)
 		return (1);
 	fdf.map = parse_map(fd);
-	ft_printmap(fdf.map);
+	//ft_printmap(fdf.map);
 	ft_project_iso(fdf.map);
 	fdf.mlx = mlx_init();
 	fdf.win_ptr = mlx_new_window(fdf.mlx, WIN_WIDTH, WIN_HEIGHT,
