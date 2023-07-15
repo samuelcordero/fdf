@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:36:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/14 18:26:22 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/15 13:39:52 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_project_iso(t_map *map)
 		height_factor = WIN_HEIGHT / map->min_z * -1;
 	else
 		height_factor = WIN_HEIGHT / map->max_z;
-	height_factor /= 8.0;
+	height_factor /= 2.0;
 	if (isinf(height_factor))
 		height_factor = 1;
 	while (++j < map->height)
@@ -45,17 +45,31 @@ void	ft_project_iso(t_map *map)
 	}
 }
 
-/* void ft_rotate_x(t_point *point, double angle)
+static void ft_rotate_point(t_point *point, double angle)
 {
-	int prev_y;
-	int	prev_z;
+	int prev_x;
+	int	prev_y;
 	
+	prev_x = point->x;
 	prev_y = point->y;
-	prev_z = point->z;
-	point->y = (cos(angle) * prev_y) - (sin(angle) * prev_z);
-	point->z = (sin(angle) * prev_y) + (cos(angle) * prev_z);
+	point->x = (cos(angle) * prev_x) - (sin(angle) * prev_y);
+	point->y = (sin(angle) * prev_x) + (cos(angle) * prev_y);
 }
 
+void	ft_rotate_map(t_map *map, float angle)
+{
+	int		i;
+	int		j;
+
+	j = -1;
+	while (++j < map->height)
+	{
+		i = -1;
+		while (++i < map->width)
+			ft_rotate_point(&map->arr[j][i], angle);
+	}
+}
+/* 
 void ft_rotate_y(t_point *point, double angle)
 {
 	int prev_x;

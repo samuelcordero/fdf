@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/14 18:20:52 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/15 15:03:53 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ int	render(t_fdf *fdf)
     render_black_background(&fdf->img);
 	render_fdf(fdf);
     mlx_put_image_to_window(fdf->mlx, fdf->win_ptr, fdf->img.mlx_img, 0, 0);
+	//ft_rotate_map(fdf->map, 0.1);
+	//sleep(5);
     return (0);
 }
 /* static void	img_pix_put(t_img *img, int x, int y, int color)

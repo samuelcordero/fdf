@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/14 18:22:38 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/15 14:37:18 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@
 # include "../libft/libft.h"
 
 typedef struct s_camera{
-	double	alpha1;
-	double	alpha2;
-	double	zoom;
+	double	angle;
+	int		x;
+	int		y;
 } t_camera;
 
 typedef struct s_img
@@ -52,10 +52,6 @@ typedef struct s_point{
 	int color;
 } t_point;
 
-typedef struct s_segment{
-	t_point a;
-	t_point b;
-} t_segment;
 
 typedef struct s_map{
 	t_point **arr;
@@ -71,11 +67,27 @@ typedef struct s_fdf{
 	void	*mlx;
 	void	*win_ptr;
 	t_img	img;
+	//t_cam	cam;
 } t_fdf;
 
+//draw.c
+
 int		render(t_fdf *fdf);
+
+//project.c
+
 void	ft_project_iso(t_map *map);
+void	ft_rotate_map(t_map *map, float angle);
+
+//utils.c
+
+void	ft_free_array(char **array);
+int		ft_atoi_base(char *str, char *base);
+
+//parser.c
+
 t_map	*parse_map(int fd);
+
 void	mouse_hook(int button, int x, int y, void *param);
 void	keyboard_hook(int keycode, void *param);
 #endif
