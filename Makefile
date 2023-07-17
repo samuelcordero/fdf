@@ -6,30 +6,33 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/07/15 14:43:59 by sacorder         ###   ########.fr        #
+#    Updated: 2023/07/17 18:20:40 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT = libft/libft.a
-MINILIBX = minilibx-linux/mlx.a
-LIB = -L libft -lft -L minilibx-linux -lmlx -lm -lXext -lX11
+LD = -L libft -lft -lm
 NAME = fdf
-FLAGS = -g -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror
 INCLUDE = inc/fdf.h 
 SRC = src/main.c src/parser.c src/draw.c src/transform.c src/utils.c #src/help.c #src/mousehooks.c src/kbhooks.c
 OBJ = $(SRC:.c=.o)
 RM=/bin/rm -f
+UNAME := $(shell uname -s)
 
 ifeq ($(UNAME), Darwin)
 	# mac
-	CC = clang
-else ifeq ($(UNAME), FreeBSD)
-	# FreeBSD
-	CC = clang
+    CC = gcc
+    FLAGS += -Iminilibx_macos
+    LD += -framework OpenGL -framework AppKit -L minilibx_macos -lmlx 
+    MINILIBX = minilibx_macos/libmlx.a
+    MINILIB_PATH = ./minilibx_macos
 else
 	#Linux and others...
-	CC	= gcc
-    LIB += -lbsd
+    CC	= gcc
+    LD += -lbsd -L minilibx-linux -lmlx -lXext -lX11
+    MINILIBX = minilibx-linux/mlx.a
+    MINILIB_PATH = ./minilibx-linux
 endif
 
 all: $(NAME)
@@ -38,10 +41,10 @@ $(LIBFT):
 	@make bonus -C ./libft
 
 $(MINILIBX):
-	@make -C ./minilibx-linux
+	@make -C $(MINILIB_PATH)
 	
-$(NAME): $(MINILIBX) $(LIBFT) $(OBJ) $(INCLUDE) 
-	$(CC) -o $(NAME) $(OBJ) $(LIB)
+$(NAME): $(LIBFT) $(MINILIBX) $(OBJ) $(INCLUDE) 
+	$(CC) $(OBJ) $(MINILIBX) -o $(NAME) $(LD)
 
 bonus: all
 
@@ -50,13 +53,13 @@ bonus: all
 
 clean:
 	@make clean -C ./libft
-	@make clean -C ./minilibx-linux
+	@make clean -C ./$(MINILIB_PATH)
 	$(RM) $(OBJ)
 	$(RM) $(OBJBONUS)
 
 fclean: clean
 	@make fclean -C ./libft
-	@make clean -C ./minilibx-linux
+	@make clean -C ./$(MINILIB_PATH)
 	$(RM) $(NAME)
 
 re: fclean all

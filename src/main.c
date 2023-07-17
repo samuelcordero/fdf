@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/15 15:35:27 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:28:21 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,29 +59,24 @@ int	main(int argc, char **argv)
 	int fd;
 
 	fdf.mlx = mlx_init();
-	if (argc != 2)
-		return (1);
-	fd = open(argv[1], O_RDONLY, 0644);
-	if (fd < 0)
-		return (1);
-	fdf.map = parse_map(fd);
-	//ft_printmap(fdf.map);
-	ft_project_iso(fdf.map);
-	fdf.win_ptr = mlx_new_window(fdf.mlx, WIN_WIDTH, WIN_HEIGHT,
-                                "fdf");
-    if (fdf.win_ptr == NULL)
-    {
-        free(fdf.win_ptr);
-        return (-1);
-	}
 	if (!fdf.mlx)
 		return (1);
+	fdf.win_ptr = mlx_new_window(fdf.mlx, WIN_WIDTH, WIN_HEIGHT, "fdf");
+	if (fdf.win_ptr == NULL)
+		return (-1);
 	fdf.img.mlx_img = mlx_new_image(fdf.mlx, WIN_WIDTH, WIN_HEIGHT);
 	if (!fdf.img.mlx_img)
 		return (1);
 	fdf.img.addr = mlx_get_data_addr(fdf.img.mlx_img, &fdf.img.bpp, &fdf.img.line_len, &fdf.img.endian);
 	if (!fdf.img.addr)
 		return (1);
+	if (argc != 2)
+		return (1);
+	fd = open(argv[1], O_RDONLY, 0644);
+	if (fd < 0)
+		return (1);
+	fdf.map = parse_map(fd);
+	ft_project_iso(fdf.map);
 	mlx_loop_hook(fdf.mlx, &render, &fdf);
 	
 /* 	     //Setup hooks 
@@ -89,7 +84,6 @@ int	main(int argc, char **argv)
 */
 
 	mlx_loop(fdf.mlx);
-	mlx_destroy_display(fdf.mlx);
 	free(fdf.mlx);
 	return (0);
 }

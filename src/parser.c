@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/15 14:58:40 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:27:24 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_map	*parse_map(int fd)
 	if (fd < 0)
 		return (NULL);
 	res = malloc(sizeof(t_map *));
-	res->height = 8;
+	res->height = 128;
 	res->min_z = 0;
 	res->max_z = 0;
 	row = 0;
