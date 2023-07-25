@@ -6,14 +6,14 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/07/25 22:46:36 by sacorder         ###   ########.fr        #
+#    Updated: 2023/07/26 00:13:02 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT = libft/libft.a
 LD = -L libft -lft -lm
 NAME = fdf
-FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -O2 #-g -fsanitize=address
 INCLUDE = inc/fdf.h 
 SRC = src/main.c src/parser.c src/draw.c src/transform.c src/utils.c src/hooks.c #src/help.c #src/mousehooks.c src/kbhooks.c
 OBJ = $(SRC:.c=.o)
@@ -46,7 +46,6 @@ $(MINILIBX):
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJ) $(INCLUDE) 
 	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) -o $(NAME) $(LD)
 
-bonus: all
 
 %.o: %.c
 	$(CC) $(FLAGS) -c -o $@ $<
@@ -62,8 +61,7 @@ fclean: clean
 	@make clean -C ./$(MINILIB_PATH)
 	$(RM) $(NAME)
 
-re: fclean all
+re:: fclean
+re:: all
 
-rebonus: fclean bonus
-
-.PHONY: all bonus clean fclean re rebonus
+.PHONY: all clean fclean re

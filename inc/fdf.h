@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/25 22:52:49 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/25 23:53:36 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ int		render(t_fdf *fdf);
 
 //project.c
 
-void	ft_project_iso(t_map *map);
-void	ft_rotate_map(t_map *map, float angle);
+void	ft_project_iso(t_map *map, float angle);
 
 //utils.c
 

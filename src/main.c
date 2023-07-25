@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/25 22:51:38 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/25 23:38:39 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,7 @@ int	main(int argc, char **argv)
 	if (fd < 0)
 		return (1);
 	fdf.map = parse_map(fd);
-
 	mlx_loop_hook(fdf.mlx, &render, &fdf);
-	
-/* 	     //Setup hooks 
-    mlx_hook(data.win_ptr, KeyPress, KeyPressMask, &handle_keypress, &data);
-*/
 	mlx_hook(fdf.win_ptr, 17, 0, &hook_exit, &fdf);
 	mlx_hook(fdf.win_ptr, 2, 1, &ft_input_hook, &fdf);
 	mlx_loop(fdf.mlx);

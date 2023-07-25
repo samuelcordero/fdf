@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/25 22:34:48 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/26 00:07:10 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,14 @@ static void render_line(t_img *img, t_point a, t_point b)
 {
 	int		color;
 	int		total_pixels;
-	double deltaX = b.x - a.x; // 10
-	double deltaY = b.y - a.y; // 0
+	double deltaX = b.proy_x - a.proy_x; // 10
+	double deltaY = b.proy_y - a.proy_y; // 0
 	int pixels = sqrt((deltaX * deltaX) + (deltaY * deltaY));
 
 	deltaX /= pixels; // 1
 	deltaY /= pixels; // 0
-	double pixelX = a.x;
-	double pixelY = a.y;
+	double pixelX = a.proy_x;
+	double pixelY = a.proy_y;
 	total_pixels = pixels;
 	while (pixels)
 	{
@@ -104,14 +104,17 @@ void	render_fdf(t_fdf *fdf)
 
 int	render(t_fdf *fdf)
 {
+	float angle;
+
+	angle = 0.0;
     if (fdf->win_ptr == NULL)
         return (1);
-	//projectfdf
     render_black_background(&fdf->img);
+	ft_project_iso(fdf->map, angle);
 	render_fdf(fdf);
     mlx_put_image_to_window(fdf->mlx, fdf->win_ptr, fdf->img.mlx_img, 0, 0);
-	//ft_rotate_map(fdf->map, 0.1);
 	//sleep(5);
+	//printf("Angle: %f\n", angle);
     return (0);
 }
 
