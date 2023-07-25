@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/15 15:03:53 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:34:48 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	render(t_fdf *fdf)
 {
     if (fdf->win_ptr == NULL)
         return (1);
+	//projectfdf
     render_black_background(&fdf->img);
 	render_fdf(fdf);
     mlx_put_image_to_window(fdf->mlx, fdf->win_ptr, fdf->img.mlx_img, 0, 0);
@@ -113,13 +114,6 @@ int	render(t_fdf *fdf)
 	//sleep(5);
     return (0);
 }
-/* static void	img_pix_put(t_img *img, int x, int y, int color)
-{
-    char    *pixel;
-
-    pixel = img->addr + (y * img->line_len + x * (img->bpp / 8));
-    *(int *)pixel = color;
-} */
 
 /* static void render_line(t_img *img, t_point a, t_point b)
 {

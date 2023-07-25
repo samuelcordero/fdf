@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/15 14:37:18 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:52:49 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 //key definitions
 
+# define ESCAPE 65307
 # define HELP_KEY 72
 # define ROTATE_UP_KEY 73
 # define ROTATE_LEFT_KEY 74
@@ -30,7 +31,8 @@
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
 
-typedef struct s_camera{
+typedef struct s_camera
+{
 	double	angle;
 	int		x;
 	int		y;
@@ -45,15 +47,19 @@ typedef struct s_img
 	int		endian;
 } t_img;
 
-typedef struct s_point{
-	float x;
-	float y;
-	float z;
-	int color;
+typedef struct s_point
+{
+	float	x;
+	float	y;
+	float	z;
+	float	proy_x;
+	float	proy_y;
+	int		color;
 } t_point;
 
 
-typedef struct s_map{
+typedef struct s_map
+{
 	t_point **arr;
 	int width;
 	int height;
@@ -62,7 +68,8 @@ typedef struct s_map{
 	float h_tile_size;
 } t_map;
 
-typedef struct s_fdf{
+typedef struct s_fdf
+{
 	t_map	*map;
 	void	*mlx;
 	void	*win_ptr;
@@ -88,6 +95,9 @@ int		ft_atoi_base(char *str, char *base);
 
 t_map	*parse_map(int fd);
 
-void	mouse_hook(int button, int x, int y, void *param);
-void	keyboard_hook(int keycode, void *param);
+//hooks.c
+
+int		hook_exit(t_fdf *fdf);
+int		ft_input_hook(int keycode, t_fdf *fdf);
+
 #endif

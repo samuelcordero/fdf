@@ -6,16 +6,16 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/07/17 18:20:40 by sacorder         ###   ########.fr        #
+#    Updated: 2023/07/25 22:46:36 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT = libft/libft.a
 LD = -L libft -lft -lm
 NAME = fdf
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 INCLUDE = inc/fdf.h 
-SRC = src/main.c src/parser.c src/draw.c src/transform.c src/utils.c #src/help.c #src/mousehooks.c src/kbhooks.c
+SRC = src/main.c src/parser.c src/draw.c src/transform.c src/utils.c src/hooks.c #src/help.c #src/mousehooks.c src/kbhooks.c
 OBJ = $(SRC:.c=.o)
 RM=/bin/rm -f
 UNAME := $(shell uname -s)
@@ -31,7 +31,7 @@ else
 	#Linux and others...
     CC	= gcc
     LD += -lbsd -L minilibx-linux -lmlx -lXext -lX11
-    MINILIBX = minilibx-linux/mlx.a
+    MINILIBX = minilibx-linux/libmlx.a
     MINILIB_PATH = ./minilibx-linux
 endif
 
@@ -44,7 +44,7 @@ $(MINILIBX):
 	@make -C $(MINILIB_PATH)
 	
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJ) $(INCLUDE) 
-	$(CC) $(OBJ) $(MINILIBX) -o $(NAME) $(LD)
+	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) -o $(NAME) $(LD)
 
 bonus: all
 
