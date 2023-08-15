@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/27 13:06:04 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/15 13:33:45 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,17 +113,17 @@ void	render_fdf(t_fdf *fdf)
 
 int	render(t_fdf *fdf)
 {
-	float angle;
+	static float angle;
 
-	angle = 0.0;
+	angle += 0.05;
     if (fdf->win_ptr == NULL)
         return (1);
     render_black_background(&fdf->img);
 	ft_project_iso(fdf->map, angle);
 	render_fdf(fdf);
     mlx_put_image_to_window(fdf->mlx, fdf->win_ptr, fdf->img.mlx_img, 0, 0);
-	fdf->map->h_tile_size += 0.01;
-	//sleep(5);
+	fdf->map->h_tile_size += 0.05;
+	//sleep(1);
 	//printf("Angle: %f\n", angle);
     return (0);
 }

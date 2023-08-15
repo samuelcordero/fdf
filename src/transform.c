@@ -6,29 +6,35 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:36:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/26 00:00:18 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/15 13:21:33 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 
-static void ft_rotate_point(t_point *point, double angle)
+//meter aqui la reconversion de manera que el origen del sistema de referencia sea el entro del mapa, 
+//por lo que 0,0  pasa a ser -halfwidth, -half_height y half_width, halfhaeight pasa a ser 0, 0
+static void ft_rotate_point(t_point *point, double angle, int half_width, int half_height)
 {
-	point->proy_x = (cos(angle) * point->x) - (sin(angle) * point->y);
-	point->proy_y = (sin(angle) * point->x) + (cos(angle) * point->y);
+	point->proy_x = (cos(angle) * (point->x - half_width)) - (sin(angle) * (point->y - half_height));
+	point->proy_y = (sin(angle) * (point->x - half_width)) + (cos(angle) * (point->y - half_height));
 }
 
 static void	ft_rotate_map(t_map *map, float angle)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
+	int	half_height;
+	int	half_width;
 
+	half_height = map->height / 2;
+	half_width = map->width / 2;
 	j = -1;
 	while (++j < map->height)
 	{
 		i = -1;
 		while (++i < map->width)
-			ft_rotate_point(&map->arr[j][i], angle);
+			ft_rotate_point(&map->arr[j][i], angle, half_width, half_height);
 	}
 }
 
@@ -36,11 +42,13 @@ static void	ft_project_point_iso(t_point *point, float tile_size, float height_f
 {
 	float	prev_x;
 	int		half_width;
+	int		half_height;
 
 	prev_x = point->proy_x;
 	half_width = WIN_WIDTH / 2;
+	half_height = 	WIN_HEIGHT / 2;
 	point->proy_x = ((prev_x - point->proy_y) * (tile_size)) + half_width;
-	point->proy_y = 30 + (((prev_x + point->proy_y) * (tile_size) - (point->z * height_factor)) / 2);
+	point->proy_y = half_height + (((prev_x + point->proy_y) * (tile_size) - (point->z * height_factor)) / 2);
 }
 
 void	ft_project_iso(t_map *map, float angle)
