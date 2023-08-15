@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/15 16:22:05 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/15 18:08:11 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int interpolate_color(t_point a, t_point b, float t)
     return ((pr << 16) | (pg << 8) | pb);
 }
 
-static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
+/* static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
 {
 	float	dx;
 	float	dy;
@@ -95,7 +95,7 @@ static void	render_wu_line(t_img *img, t_point a, t_point b)
 		render_high_steep_wu_line(img, origin, end);
 	else
 		render_low_steep_wu_line(img, origin, end);
-}
+} */
 
 static void render_line(t_img *img, t_point a, t_point b)
 {

@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/15 15:22:13 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/15 18:12:09 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@
 # ifndef MAC_OS
 #  define ESCAPE 65307
 #  define HELP_KEY 72
-#  define ROTATE_LEFT 12
-#  define ROTATE_RIGHT 14
-#  define MOVE_UP 13
-#  define MOVE_DOWN 1
-#  define MOVE_LEFT 0
-#  define MOVE_RIGHT 2
-#  define ZOOM_OUT 7
-#  define ZOOM_IN 6
+#  define ROTATE_LEFT 113
+#  define ROTATE_RIGHT 101
+#  define MOVE_UP 119
+#  define MOVE_DOWN 115
+#  define MOVE_LEFT 97
+#  define MOVE_RIGHT 100
+#  define ZOOM_OUT 122
+#  define ZOOM_IN 120
 
 #  define WHEEL_UP 3
 #  define WHEEL_DOWN 4
