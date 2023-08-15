@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:36:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/15 13:21:33 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/15 15:26:26 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	ft_rotate_map(t_map *map, float angle)
 	}
 }
 
-static void	ft_project_point_iso(t_point *point, float tile_size, float height_factor)
+static void	ft_project_point_iso(t_point *point, float tile_size, float height_factor, t_cam *cam)
 {
 	float	prev_x;
 	int		half_width;
@@ -47,18 +47,18 @@ static void	ft_project_point_iso(t_point *point, float tile_size, float height_f
 	prev_x = point->proy_x;
 	half_width = WIN_WIDTH / 2;
 	half_height = 	WIN_HEIGHT / 2;
-	point->proy_x = ((prev_x - point->proy_y) * (tile_size)) + half_width;
-	point->proy_y = half_height + (((prev_x + point->proy_y) * (tile_size) - (point->z * height_factor)) / 2);
+	point->proy_x = cam->x + ((prev_x - point->proy_y) * (tile_size)) + half_width;
+	point->proy_y = cam->y + half_height + (((prev_x + point->proy_y) * (tile_size) - (point->z * height_factor)) / 2);
 }
 
-void	ft_project_iso(t_map *map, float angle)
+void	ft_project_iso(t_map *map, t_cam *cam)
 {
 	int		i;
 	int		j;
 	float	height_factor;
 
 	j = -1;
-	ft_rotate_map(map, angle);
+	ft_rotate_map(map, cam->angle);
 	if (map->min_z * -1 > map->max_z)
 		height_factor = WIN_HEIGHT / map->min_z * -1;
 	else
@@ -70,7 +70,7 @@ void	ft_project_iso(t_map *map, float angle)
 	{
 		i = -1;
 		while (++i < map->width)
-			ft_project_point_iso(&map->arr[j][i], map->h_tile_size, height_factor);
+			ft_project_point_iso(&map->arr[j][i], map->h_tile_size, height_factor, cam);
 	}
 }
 

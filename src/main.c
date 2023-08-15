@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/25 23:38:39 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/15 15:12:03 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,9 @@ static void	init(t_fdf *fdf)
 	fdf->img.addr = mlx_get_data_addr(fdf->img.mlx_img, &fdf->img.bpp, &fdf->img.line_len, &fdf->img.endian);
 	if (!fdf->img.addr)
 		exit(1);
+	fdf->cam.x = 0;
+	fdf->cam.y = 0;
+	fdf->cam.angle = 0.0;
 }
 
 int	main(int argc, char **argv)

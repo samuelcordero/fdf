@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:08:40 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/25 22:53:23 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/15 15:28:17 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,33 @@ int	hook_exit(t_fdf *fdf)
 	return (0);
 }
 
+//checkear h_tile_size antes de modificarllo, actualmente el mapa se revierte cuando h_tile_size es menor que 0
+static void	kb_rotations_hook(int key, t_fdf *fdf)
+{
+	if (key == ZOOM_IN)
+		fdf->map->h_tile_size += 2;
+	else if (key == ZOOM_OUT)
+		fdf->map->h_tile_size -= 2;
+	else if (key == ROTATE_LEFT)
+		fdf->cam.angle += 0.05;
+	else if (key == ROTATE_RIGHT)
+		fdf->cam.angle -= 0.05;
+	else if (key == MOVE_DOWN)
+		fdf->cam.y -= 10;
+	else if (key == MOVE_UP)
+		fdf->cam.y += 10;
+	else if (key == MOVE_LEFT)
+		fdf->cam.x += 10;
+	else if (key == MOVE_RIGHT)
+		fdf->cam.x -= 10;
+} 
+
 int	ft_input_hook(int keycode, t_fdf *fdf)
 {
-	(void) fdf;
 	ft_printf("Key code: %i\n", keycode);
 	if (keycode == ESCAPE)
 		hook_exit(fdf);
+	kb_rotations_hook(keycode, fdf);
 	return (0);
 }
 

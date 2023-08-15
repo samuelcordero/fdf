@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/25 23:53:36 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/15 15:22:13 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,35 @@
 # define WIN_HEIGHT 960
 
 //key definitions
+# ifndef MAC_OS
+#  define ESCAPE 65307
+#  define HELP_KEY 72
+#  define ROTATE_LEFT 12
+#  define ROTATE_RIGHT 14
+#  define MOVE_UP 13
+#  define MOVE_DOWN 1
+#  define MOVE_LEFT 0
+#  define MOVE_RIGHT 2
+#  define ZOOM_OUT 7
+#  define ZOOM_IN 6
 
-# define ESCAPE 65307
-# define HELP_KEY 72
-# define ROTATE_UP_KEY 73
-# define ROTATE_LEFT_KEY 74
-# define ROTATE_DOWN_KEY 75
-# define ROTATE_RIGHT_KEY 76
+#  define WHEEL_UP 3
+#  define WHEEL_DOWN 4
+# else
+#  define ESCAPE 53
+#  define HELP_KEY 72
+#  define ROTATE_LEFT 12
+#  define ROTATE_RIGHT 14
+#  define MOVE_UP 13
+#  define MOVE_DOWN 1
+#  define MOVE_LEFT 0
+#  define MOVE_RIGHT 2
+#  define ZOOM_OUT 7
+#  define ZOOM_IN 6
 
-# define WHEEL_UP 3
-# define WHEEL_DOWN 4
+#  define WHEEL_UP 3
+#  define WHEEL_DOWN 4
+# endif
 
 # include <math.h>
 # include "../minilibx-linux/mlx.h"
@@ -33,10 +52,10 @@
 
 typedef struct s_camera
 {
-	double	angle;
+	float	angle;
 	int		x;
 	int		y;
-} t_camera;
+} t_cam;
 
 typedef struct s_img
 {
@@ -74,7 +93,7 @@ typedef struct s_fdf
 	void	*mlx;
 	void	*win_ptr;
 	t_img	img;
-	//t_cam	cam;
+	t_cam	cam;
 } t_fdf;
 
 //draw.c
@@ -83,7 +102,7 @@ int		render(t_fdf *fdf);
 
 //project.c
 
-void	ft_project_iso(t_map *map, float angle);
+void	ft_project_iso(t_map *map, t_cam *cam);
 
 //utils.c
 

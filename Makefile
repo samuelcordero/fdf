@@ -6,7 +6,7 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/07/26 00:13:02 by sacorder         ###   ########.fr        #
+#    Updated: 2023/08/15 15:17:38 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ UNAME := $(shell uname -s)
 ifeq ($(UNAME), Darwin)
 	# mac
     CC = gcc
-    FLAGS += -Iminilibx_macos
+    FLAGS += -D MAC_OS -Iminilibx_macos
     LD += -framework OpenGL -framework AppKit -L minilibx_macos -lmlx 
     MINILIBX = minilibx_macos/libmlx.a
     MINILIB_PATH = ./minilibx_macos
