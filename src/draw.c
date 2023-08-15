@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/15 15:26:52 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/15 16:22:05 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,43 @@ static int interpolate_color(t_point a, t_point b, float t)
     pg = (int)(a.color >> 8 & 0xFF) * (1 - t) + (int)(b.color >> 8 & 0xFF) * t;
     pb = (int)(a.color & 0xFF) * (1 - t) + (int)(b.color & 0xFF) * t;
     return ((pr << 16) | (pg << 8) | pb);
+}
+
+static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
+{
+	float	dx;
+	float	dy;
+	float 	gradient;
+
+	dx = b->proy_x - a->proy_x;
+	dy = b->proy_y - a->proy_y;
+	gradient = dy / dx;
+	if (dx == 0.0)
+		gradient = 1.0;
+	
+}
+
+static void	render_low_steep_wu_line(t_img *img, t_point *a, t_point *b)
+{
+
+}
+
+static void	render_wu_line(t_img *img, t_point a, t_point b)
+{
+	t_point *origin;
+	t_point *end;
+
+	origin = &a;
+	end = &b;
+	if (a.proy_x > b.proy_x)
+	{
+		origin = &b;
+		end = &a;
+	}
+	if (abs(b.proy_y - a.proy_y) > abs(b.proy_x - a.proy_x))
+		render_high_steep_wu_line(img, origin, end);
+	else
+		render_low_steep_wu_line(img, origin, end);
 }
 
 static void render_line(t_img *img, t_point a, t_point b)
