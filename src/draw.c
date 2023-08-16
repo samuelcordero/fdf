@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/16 16:09:40 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/16 17:32:06 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,50 +48,6 @@ static void	render_black_background(t_img *img)
 		++i;
 	}
 }
-/* 
-static int interpolate_color(t_point a, t_point b, float t)
-{
-	int		pr;
-	int		pb;
-	int		pg;
-
-    pr = (int)(a.color >> 16 & 0xFF) * (1 - t) + (int)(b.color >> 16 & 0xFF) * t;
-    pg = (int)(a.color >> 8 & 0xFF) * (1 - t) + (int)(b.color >> 8 & 0xFF) * t;
-    pb = (int)(a.color & 0xFF) * (1 - t) + (int)(b.color & 0xFF) * t;
-    return ((pr << 16) | (pg << 8) | pb);
-}
-
-static void render_line(t_img *img, t_point a, t_point b)
-{
-    int x0 = (int)a.proy_x;
-    int y0 = (int)a.proy_y;
-    int x1 = (int)b.proy_x;
-    int y1 = (int)b.proy_y;
-
-    int dx = abs(x1 - x0);
-    int dy = abs(y1 - y0);
-    int sx = (x0 < x1) ? 1 : -1;
-    int sy = (y0 < y1) ? 1 : -1;
-
-    int err = dx - dy;
-	//ft_printf("putting line from %i, %i to %i, %i\n", x0, y0, x1, y1);	
-	//sleep(2);
-    while ((x0 != x1 && y0 != y1) && (x0 - sx != x1 && y0 - sy != y1)) {
-		//ft_printf("putting pixel %i, %i\n", x0, y0);	
-        float t = sqrtf((x0 - a.proy_x) * (x0 - a.proy_x) + (y0 - a.proy_y) * (y0 - a.proy_y)) /
-                  sqrtf((b.proy_x - a.proy_x) * (b.proy_x - a.proy_x) + (b.proy_y - a.proy_y) * (b.proy_y - a.proy_y));
-		int pixel_color = interpolate_color(a, b, t);
-        img_pix_put(img, x0, y0, pixel_color);
-        if (2 * err > -dy) {
-            err -= dy;
-            x0 += sx;
-        }
-        if (2 * err < dx) {
-            err += dx;
-            y0 += sy;
-        }
-	}
-} */
 
 static float	fpart(float x)
 {
@@ -101,6 +57,18 @@ static float	fpart(float x)
 static float	rfpart(float x)
 {
 	return (1 - fpart(x));
+}
+//returns an int representing a color between a.color and b.color, based on a displacement [0,1] and brightness [0,1]
+static int	interpolate_color(int acolor, int bcolor, float t, float brightness)
+{
+	int	pr;
+	int	pb;
+	int	pg;
+
+	pr = ((int)(acolor >> 16 & 0xFF) * (1 - t) + (int)(bcolor >> 16 & 0xFF) * t) * brightness;
+	pg = ((int)(acolor >> 8 & 0xFF) * (1 - t) + (int)(bcolor >> 8 & 0xFF) * t) * brightness;
+	pb = ((int)(acolor & 0xFF) * (1 - t) + (int)(bcolor & 0xFF) * t) * brightness;
+	return ((pr << 16) | (pg << 8) | pb);
 }
 
 static void	wu_starting_point(t_img *img, t_point *a, t_point *b, t_xiaolinsup *sup)
@@ -113,13 +81,13 @@ static void	wu_starting_point(t_img *img, t_point *a, t_point *b, t_xiaolinsup *
 	sup->ypxl1 = floor(sup->yend);
 	if (sup->steep)
 	{
-		img_pix_put(img, sup->ypxl1, sup->xpxl1, a->color * rfpart(sup->yend) * sup->xgap);
-		img_pix_put(img, sup->ypxl1 + 1, sup->xpxl1, a->color * fpart(sup->yend) * sup->xgap);
+		img_pix_put(img, sup->ypxl1, sup->xpxl1, interpolate_color(a->color, b->color, 0, rfpart(sup->yend) * sup->xgap));
+		img_pix_put(img, sup->ypxl1 + 1, sup->xpxl1, interpolate_color(a->color, b->color, 0, fpart(sup->yend) * sup->xgap));
 	}
 	else
 	{
-		img_pix_put(img, sup->xpxl1, sup->ypxl1 + 1, a->color * rfpart(sup->yend) * sup->xgap);
-		img_pix_put(img, sup->xpxl1 + 1, sup->ypxl1 + 1, a->color * fpart(sup->yend) * sup->xgap);
+		img_pix_put(img, sup->xpxl1, sup->ypxl1 + 1, interpolate_color(a->color, b->color, 0, rfpart(sup->yend) * sup->xgap));
+		img_pix_put(img, sup->xpxl1 + 1, sup->ypxl1 + 1, interpolate_color(a->color, b->color, 0, fpart(sup->yend) * sup->xgap));
 	}
 	sup->intery = sup->yend + sup->gradient;
 }
@@ -134,13 +102,13 @@ static void	wu_end_point(t_img *img, t_point *a, t_point *b, t_xiaolinsup *sup)
 	sup->ypxl2 = floor(sup->yend);
 	if (sup->steep)
 	{
-		img_pix_put(img, sup->ypxl2, sup->xpxl2, b->color * rfpart(sup->yend) * sup->xgap);
-		img_pix_put(img, sup->ypxl2 + 1, sup->xpxl2, b->color * fpart(sup->yend) * sup->xgap);
+		img_pix_put(img, sup->ypxl2, sup->xpxl2, interpolate_color(a->color, b->color, 1, rfpart(sup->yend) * sup->xgap));
+		img_pix_put(img, sup->ypxl2 + 1, sup->xpxl2, interpolate_color(a->color, b->color, 1, fpart(sup->yend) * sup->xgap));
 	}
 	else
 	{
-		img_pix_put(img, sup->xpxl2, sup->ypxl2 + 1, b->color * rfpart(sup->yend) * sup->xgap);
-		img_pix_put(img, sup->xpxl2 + 1, sup->ypxl2 + 1, b->color * fpart(sup->yend) * sup->xgap);
+		img_pix_put(img, sup->xpxl2, sup->ypxl2 + 1, interpolate_color(a->color, b->color, 1, rfpart(sup->yend) * sup->xgap));
+		img_pix_put(img, sup->xpxl2 + 1, sup->ypxl2 + 1, interpolate_color(a->color, b->color, 1, fpart(sup->yend) * sup->xgap));
 	}
 }
 
@@ -160,8 +128,8 @@ static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
 	x = sup.xpxl1;
 	while (x < sup.xpxl2 -1)
 	{
-		img_pix_put(img, floor(sup.intery), x, a->color * rfpart(sup.intery));
-		img_pix_put(img, floor(sup.intery) + 1, x, a->color * fpart(sup.intery));
+		img_pix_put(img, floor(sup.intery), x, interpolate_color(a->color, b->color, (float) (x - sup.xpxl1) / (float) sup.xpxl1 - sup.xpxl2, rfpart(sup.intery)));
+		img_pix_put(img, floor(sup.intery) + 1, x, interpolate_color(a->color, b->color, (float) (x - sup.xpxl1) / (float) sup.xpxl1 - sup.xpxl2, fpart(sup.intery)));
 		sup.intery = sup.intery + sup.gradient;
 		++x;
 	}
@@ -183,8 +151,8 @@ static void	render_low_steep_wu_line(t_img *img, t_point *a, t_point *b)
 	x = sup.xpxl1;
 	while (x < sup.xpxl2 -1)
 	{
-		img_pix_put(img, x, floor(sup.intery), a->color * rfpart(sup.intery));
-		img_pix_put(img, x, floor(sup.intery) + 1, a->color * fpart(sup.intery));
+		img_pix_put(img, x, floor(sup.intery), interpolate_color(a->color, b->color, (float) (x - sup.xpxl1) / (float) sup.xpxl1 - sup.xpxl2, rfpart(sup.intery)));
+		img_pix_put(img, x, floor(sup.intery) + 1, interpolate_color(a->color, b->color, (float) (x - sup.xpxl1) / (float) sup.xpxl1 - sup.xpxl2, fpart(sup.intery)));
 		sup.intery = sup.intery + sup.gradient;
 		++x;
 	}
@@ -194,25 +162,27 @@ static void	render_wu_line(t_img *img, t_point a, t_point b)
 {
 	t_point *origin;
 	t_point *end;
-	//float	tmp;
+	float	tmp;
+	char	steep;
 
 	origin = &a;
 	end = &b;
-/* 	if (fabs(b.proy_y - a.proy_y) > fabs(b.proy_x - a.proy_x))
+	steep = fabs(b.proy_y - a.proy_y) > fabs(b.proy_x - a.proy_x);
+ 	if (steep)
 	{
 		tmp = a.proy_x;
-		a.proy_x = b.proy_x;
+		a.proy_x = a.proy_y;
+		a.proy_y = tmp;
+		tmp = b.proy_y;
+		b.proy_y = b.proy_x;
 		b.proy_x = tmp;
-		tmp = a.proy_y;
-		a.proy_y = b.proy_y;
-		b.proy_y = tmp;
-	} */
+	}
 	if (a.proy_x > b.proy_x)
 	{
 		origin = &b;
 		end = &a;
 	}
-	if (fabs(b.proy_y - a.proy_y) > fabs(b.proy_x - a.proy_x))
+	if (steep)
 		render_high_steep_wu_line(img, origin, end);
 	else
 		render_low_steep_wu_line(img, origin, end);
@@ -245,8 +215,6 @@ int	render(t_fdf *fdf)
 	ft_project_iso(fdf->map, &fdf->cam);
 	render_fdf(fdf);
     mlx_put_image_to_window(fdf->mlx, fdf->win_ptr, fdf->img.mlx_img, 0, 0);
-	//sleep(1);
-	//printf("Angle: %f\n", angle);
     return (0);
 }
 
@@ -329,4 +297,48 @@ static void render_line(t_img *img, t_point a, t_point b)
     	--pixels;
 	}
 }
-*/
+
+
+static int interpolate_color(t_point a, t_point b, float t)
+{
+	int		pr;
+	int		pb;
+	int		pg;
+
+    pr = (int)(a.color >> 16 & 0xFF) * (1 - t) + (int)(b.color >> 16 & 0xFF) * t;
+    pg = (int)(a.color >> 8 & 0xFF) * (1 - t) + (int)(b.color >> 8 & 0xFF) * t;
+    pb = (int)(a.color & 0xFF) * (1 - t) + (int)(b.color & 0xFF) * t;
+    return ((pr << 16) | (pg << 8) | pb);
+}
+
+static void render_line(t_img *img, t_point a, t_point b)
+{
+    int x0 = (int)a.proy_x;
+    int y0 = (int)a.proy_y;
+    int x1 = (int)b.proy_x;
+    int y1 = (int)b.proy_y;
+
+    int dx = abs(x1 - x0);
+    int dy = abs(y1 - y0);
+    int sx = (x0 < x1) ? 1 : -1;
+    int sy = (y0 < y1) ? 1 : -1;
+
+    int err = dx - dy;
+	//ft_printf("putting line from %i, %i to %i, %i\n", x0, y0, x1, y1);	
+	//sleep(2);
+    while ((x0 != x1 && y0 != y1) && (x0 - sx != x1 && y0 - sy != y1)) {
+		//ft_printf("putting pixel %i, %i\n", x0, y0);	
+        float t = sqrtf((x0 - a.proy_x) * (x0 - a.proy_x) + (y0 - a.proy_y) * (y0 - a.proy_y)) /
+                  sqrtf((b.proy_x - a.proy_x) * (b.proy_x - a.proy_x) + (b.proy_y - a.proy_y) * (b.proy_y - a.proy_y));
+		int pixel_color = interpolate_color(a, b, t);
+        img_pix_put(img, x0, y0, pixel_color);
+        if (2 * err > -dy) {
+            err -= dy;
+            x0 += sx;
+        }
+        if (2 * err < dx) {
+            err += dx;
+            y0 += sy;
+        }
+	}
+} */
