@@ -6,7 +6,11 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2023/08/16 13:54:09 by sacorder         ###   ########.fr       */
+=======
 /*   Updated: 2023/08/15 18:08:11 by sacorder         ###   ########.fr       */
+>>>>>>> e7ef3701c745005eb2b1be2b6ef065f76258fc51
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,18 +64,31 @@ static int interpolate_color(t_point a, t_point b, float t)
     return ((pr << 16) | (pg << 8) | pb);
 }
 
-/* static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
+static void	xialinwu_starting_point(t_img *img, t_point *a, t_point *b, t_xiaolinsup *sup)
 {
-	float	dx;
-	float	dy;
-	float 	gradient;
+	sup->xend = (int) (a->proy_x + 0.5);
+	sup->yend = a->proy_y + sup->gradient * ((float) sup->xend - a->proy_x);
+	sup->xgap = 1 - ((a->proy_x + 0.5) - (int) (a->proy_x + 1));
+}
 
-	dx = b->proy_x - a->proy_x;
-	dy = b->proy_y - a->proy_y;
-	gradient = dy / dx;
-	if (dx == 0.0)
-		gradient = 1.0;
-	
+static void	xialinwu_end_point(t_img *img, t_point *a, t_point *b, t_xiaolinsup *sup)
+{
+
+}
+
+static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
+=======
+/* static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
+>>>>>>> e7ef3701c745005eb2b1be2b6ef065f76258fc51
+{
+	t_xiaolinsup	sup;
+
+	sup.dx = b->proy_x - a->proy_x;
+	sup.dy = b->proy_y - a->proy_y;
+	sup.gradient = sup.dy / sup.dx;
+	if (sup.dx == 0.0)
+		sup.gradient = 1.0;
+	sup.steep = 1;
 }
 
 static void	render_low_steep_wu_line(t_img *img, t_point *a, t_point *b)

@@ -6,7 +6,11 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
+<<<<<<< HEAD
+/*   Updated: 2023/08/16 13:12:34 by sacorder         ###   ########.fr       */
+=======
 /*   Updated: 2023/08/15 18:12:09 by sacorder         ###   ########.fr       */
+>>>>>>> e7ef3701c745005eb2b1be2b6ef065f76258fc51
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +99,22 @@ typedef struct s_fdf
 	t_img	img;
 	t_cam	cam;
 } t_fdf;
+
+typedef struct s_xialinwusup
+{
+	int		xend;
+	int		yend;
+	int		xgap;
+	int		xpxl1;
+	int		xpxl2;
+	int		ypxl1;
+	int		ypxl2;
+	int		intery;
+	float	dx;
+	float	dy;
+	float 	gradient;
+	char	steep;
+} t_xiaolinsup;
 
 //draw.c
 
