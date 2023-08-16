@@ -6,13 +6,10 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/16 13:12:34 by sacorder         ###   ########.fr       */
-=======
-/*   Updated: 2023/08/15 18:12:09 by sacorder         ###   ########.fr       */
->>>>>>> e7ef3701c745005eb2b1be2b6ef065f76258fc51
+/*   Updated: 2023/08/16 16:00:57 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef FDF_H
 # define FDF_H
@@ -109,7 +106,7 @@ typedef struct s_xialinwusup
 	int		xpxl2;
 	int		ypxl1;
 	int		ypxl2;
-	int		intery;
+	float		intery;
 	float	dx;
 	float	dy;
 	float 	gradient;

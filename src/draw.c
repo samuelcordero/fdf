@@ -6,13 +6,10 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/08/16 13:54:09 by sacorder         ###   ########.fr       */
-=======
-/*   Updated: 2023/08/15 18:08:11 by sacorder         ###   ########.fr       */
->>>>>>> e7ef3701c745005eb2b1be2b6ef065f76258fc51
+/*   Updated: 2023/08/16 16:09:40 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../inc/fdf.h"
 
@@ -51,7 +48,7 @@ static void	render_black_background(t_img *img)
 		++i;
 	}
 }
-
+/* 
 static int interpolate_color(t_point a, t_point b, float t)
 {
 	int		pr;
@@ -63,56 +60,6 @@ static int interpolate_color(t_point a, t_point b, float t)
     pb = (int)(a.color & 0xFF) * (1 - t) + (int)(b.color & 0xFF) * t;
     return ((pr << 16) | (pg << 8) | pb);
 }
-
-static void	xialinwu_starting_point(t_img *img, t_point *a, t_point *b, t_xiaolinsup *sup)
-{
-	sup->xend = (int) (a->proy_x + 0.5);
-	sup->yend = a->proy_y + sup->gradient * ((float) sup->xend - a->proy_x);
-	sup->xgap = 1 - ((a->proy_x + 0.5) - (int) (a->proy_x + 1));
-}
-
-static void	xialinwu_end_point(t_img *img, t_point *a, t_point *b, t_xiaolinsup *sup)
-{
-
-}
-
-static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
-=======
-/* static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
->>>>>>> e7ef3701c745005eb2b1be2b6ef065f76258fc51
-{
-	t_xiaolinsup	sup;
-
-	sup.dx = b->proy_x - a->proy_x;
-	sup.dy = b->proy_y - a->proy_y;
-	sup.gradient = sup.dy / sup.dx;
-	if (sup.dx == 0.0)
-		sup.gradient = 1.0;
-	sup.steep = 1;
-}
-
-static void	render_low_steep_wu_line(t_img *img, t_point *a, t_point *b)
-{
-
-}
-
-static void	render_wu_line(t_img *img, t_point a, t_point b)
-{
-	t_point *origin;
-	t_point *end;
-
-	origin = &a;
-	end = &b;
-	if (a.proy_x > b.proy_x)
-	{
-		origin = &b;
-		end = &a;
-	}
-	if (abs(b.proy_y - a.proy_y) > abs(b.proy_x - a.proy_x))
-		render_high_steep_wu_line(img, origin, end);
-	else
-		render_low_steep_wu_line(img, origin, end);
-} */
 
 static void render_line(t_img *img, t_point a, t_point b)
 {
@@ -144,7 +91,132 @@ static void render_line(t_img *img, t_point a, t_point b)
             y0 += sy;
         }
 	}
-} 
+} */
+
+static float	fpart(float x)
+{
+	return (x - floor(x));
+}
+
+static float	rfpart(float x)
+{
+	return (1 - fpart(x));
+}
+
+static void	wu_starting_point(t_img *img, t_point *a, t_point *b, t_xiaolinsup *sup)
+{
+	(void) b;
+	sup->xend = round(a->proy_x);
+	sup->yend = a->proy_y + sup->gradient * ((float) sup->xend - a->proy_x);
+	sup->xgap = rfpart(a->proy_x + 0.5);
+	sup->xpxl1 = sup->xend;
+	sup->ypxl1 = floor(sup->yend);
+	if (sup->steep)
+	{
+		img_pix_put(img, sup->ypxl1, sup->xpxl1, a->color * rfpart(sup->yend) * sup->xgap);
+		img_pix_put(img, sup->ypxl1 + 1, sup->xpxl1, a->color * fpart(sup->yend) * sup->xgap);
+	}
+	else
+	{
+		img_pix_put(img, sup->xpxl1, sup->ypxl1 + 1, a->color * rfpart(sup->yend) * sup->xgap);
+		img_pix_put(img, sup->xpxl1 + 1, sup->ypxl1 + 1, a->color * fpart(sup->yend) * sup->xgap);
+	}
+	sup->intery = sup->yend + sup->gradient;
+}
+
+static void	wu_end_point(t_img *img, t_point *a, t_point *b, t_xiaolinsup *sup)
+{
+	(void) a;
+	sup->xend = round(b->proy_x);
+	sup->yend = b->proy_y + sup->gradient * ((float) sup->xend - b->proy_x);
+	sup->xgap = fpart(b->proy_x + 0.5);
+	sup->xpxl2 = sup->xend;
+	sup->ypxl2 = floor(sup->yend);
+	if (sup->steep)
+	{
+		img_pix_put(img, sup->ypxl2, sup->xpxl2, b->color * rfpart(sup->yend) * sup->xgap);
+		img_pix_put(img, sup->ypxl2 + 1, sup->xpxl2, b->color * fpart(sup->yend) * sup->xgap);
+	}
+	else
+	{
+		img_pix_put(img, sup->xpxl2, sup->ypxl2 + 1, b->color * rfpart(sup->yend) * sup->xgap);
+		img_pix_put(img, sup->xpxl2 + 1, sup->ypxl2 + 1, b->color * fpart(sup->yend) * sup->xgap);
+	}
+}
+
+static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
+{
+	t_xiaolinsup	sup;
+	int				x;
+
+	sup.dx = b->proy_x - a->proy_x;
+	sup.dy = b->proy_y - a->proy_y;
+	sup.gradient = sup.dy / sup.dx;
+	if (sup.dx == 0.0)
+		sup.gradient = 1.0;
+	sup.steep = 1;
+	wu_starting_point(img, a, b, &sup);
+	wu_end_point(img, a, b, &sup);
+	x = sup.xpxl1;
+	while (x < sup.xpxl2 -1)
+	{
+		img_pix_put(img, floor(sup.intery), x, a->color * rfpart(sup.intery));
+		img_pix_put(img, floor(sup.intery) + 1, x, a->color * fpart(sup.intery));
+		sup.intery = sup.intery + sup.gradient;
+		++x;
+	}
+}
+
+static void	render_low_steep_wu_line(t_img *img, t_point *a, t_point *b)
+{
+	t_xiaolinsup	sup;
+	int				x;
+
+	sup.dx = b->proy_x - a->proy_x;
+	sup.dy = b->proy_y - a->proy_y;
+	sup.gradient = sup.dy / sup.dx;
+	if (sup.dx == 0.0)
+		sup.gradient = 1.0;
+	sup.steep = 0;
+	wu_starting_point(img, a, b, &sup);
+	wu_end_point(img, a, b, &sup);
+	x = sup.xpxl1;
+	while (x < sup.xpxl2 -1)
+	{
+		img_pix_put(img, x, floor(sup.intery), a->color * rfpart(sup.intery));
+		img_pix_put(img, x, floor(sup.intery) + 1, a->color * fpart(sup.intery));
+		sup.intery = sup.intery + sup.gradient;
+		++x;
+	}
+}
+
+static void	render_wu_line(t_img *img, t_point a, t_point b)
+{
+	t_point *origin;
+	t_point *end;
+	//float	tmp;
+
+	origin = &a;
+	end = &b;
+/* 	if (fabs(b.proy_y - a.proy_y) > fabs(b.proy_x - a.proy_x))
+	{
+		tmp = a.proy_x;
+		a.proy_x = b.proy_x;
+		b.proy_x = tmp;
+		tmp = a.proy_y;
+		a.proy_y = b.proy_y;
+		b.proy_y = tmp;
+	} */
+	if (a.proy_x > b.proy_x)
+	{
+		origin = &b;
+		end = &a;
+	}
+	if (fabs(b.proy_y - a.proy_y) > fabs(b.proy_x - a.proy_x))
+		render_high_steep_wu_line(img, origin, end);
+	else
+		render_low_steep_wu_line(img, origin, end);
+}
 
 void	render_fdf(t_fdf *fdf)
 {
@@ -158,9 +230,9 @@ void	render_fdf(t_fdf *fdf)
 		while (++i < fdf->map->width)
 		{
 			if (j + 1 < fdf->map->height)
-				render_line(&fdf->img, fdf->map->arr[j][i], fdf->map->arr[j + 1][i]);
+				render_wu_line(&fdf->img, fdf->map->arr[j][i], fdf->map->arr[j + 1][i]);
 			if (i + 1 < fdf->map->width)
-				render_line(&fdf->img, fdf->map->arr[j][i], fdf->map->arr[j][i + 1]);
+				render_wu_line(&fdf->img, fdf->map->arr[j][i], fdf->map->arr[j][i + 1]);
 		}
 	}
 }
