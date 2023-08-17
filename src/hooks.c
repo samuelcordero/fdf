@@ -6,11 +6,19 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:08:40 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/16 16:45:44 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/17 13:59:15 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
+
+static void	reset_cam(t_fdf *fdf)
+{
+	fdf->cam.angle = 0.0;
+	fdf->cam.x = 0;
+	fdf->cam.y = 0;
+	fdf->map->h_tile_size = fdf->map->og_tile_size;
+}
 
 int	hook_exit(t_fdf *fdf)
 {
@@ -40,7 +48,9 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 		fdf->cam.x += 10;
 	else if (key == MOVE_RIGHT)
 		fdf->cam.x -= 10;
-} 
+	else if (key == RESET_CAM)
+		reset_cam(fdf);
+}
 
 int	ft_input_hook(int keycode, t_fdf *fdf)
 {

@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/07/25 22:43:38 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/17 13:48:05 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static t_point ft_str2point(int x, int y, char *str)
 {
 	t_point	this;
 	char	**splited;
-	int		color;
 
 	splited = ft_split(str, ',');
 	this.z = 0;
@@ -36,15 +35,16 @@ static t_point ft_str2point(int x, int y, char *str)
 	this.y = y;
 	if (splited)
 		this.z = ft_atoi(splited[0]);
-	this.color = 0xFFFFFF;
 	if (splited[1])
 	{
-		color = ft_atoi_base(splited[1], "0123456789ABCDEF");
-		if (color == -1)
+		this.color = ft_atoi_base(splited[1], "0123456789ABCDEF");
+		if (this.color == -1)
 			this.color = ft_atoi_base(splited[1], "0123456789abcdef");
-		else
-			this.color = color;
+		if (this.color == -1)
+			this.color = 0xFFFFFF;
 	}
+	else
+		this.color = 0xFFFFFF;
 	ft_free_array(splited);
 	return (this);
 }
@@ -108,8 +108,8 @@ t_map	*parse_map(int fd)
 		return (NULL);
 	res = malloc(sizeof(t_map));
 	res->height = 8;
-	res->min_z = 0;
-	res->max_z = 0;
+	res->min_z = (double) INT_MAX;
+	res->max_z = (double) INT_MIN;
 	row = 0;
 	res->arr = malloc(sizeof(t_point *) * (res->height + 1));
 	res->arr[res->height] = NULL;
@@ -129,5 +129,6 @@ t_map	*parse_map(int fd)
 		res->h_tile_size =  0.5 * (float) (WIN_WIDTH - 60) / (float) res->width;
 	else
 		res->h_tile_size = 0.8 * (float) (WIN_HEIGHT - 60) / (float) res->height;
+	res->og_tile_size = res->h_tile_size;
 	return (res);
 }

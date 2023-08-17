@@ -6,21 +6,21 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:36:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/15 15:26:26 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:05:18 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 
-//meter aqui la reconversion de manera que el origen del sistema de referencia sea el entro del mapa, 
-//por lo que 0,0  pasa a ser -halfwidth, -half_height y half_width, halfhaeight pasa a ser 0, 0
-static void ft_rotate_point(t_point *point, double angle, int half_width, int half_height)
+static void	ft_rotate_point(t_point *pnt, double ang, int h_wdth, int h_hght)
 {
-	point->proy_x = (cos(angle) * (point->x - half_width)) - (sin(angle) * (point->y - half_height));
-	point->proy_y = (sin(angle) * (point->x - half_width)) + (cos(angle) * (point->y - half_height));
+	pnt->proy_x = (cos(ang) * (pnt->x - h_wdth))
+		- (sin(ang) * (pnt->y - h_hght));
+	pnt->proy_y = (sin(ang) * (pnt->x - h_wdth))
+		+ (cos(ang) * (pnt->y - h_hght));
 }
 
-static void	ft_rotate_map(t_map *map, float angle)
+static void	ft_rotate_map(t_map *map, double angle)
 {
 	int	i;
 	int	j;
@@ -38,39 +38,41 @@ static void	ft_rotate_map(t_map *map, float angle)
 	}
 }
 
-static void	ft_project_point_iso(t_point *point, float tile_size, float height_factor, t_cam *cam)
+static void	proj_pnt_iso(t_point *pnt, double t_sze, double v_sze, t_cam *cam)
 {
-	float	prev_x;
-	int		half_width;
-	int		half_height;
+	double	prev_x;
+	int		h_wdth;
+	int		h_hght;
 
-	prev_x = point->proy_x;
-	half_width = WIN_WIDTH / 2;
-	half_height = 	WIN_HEIGHT / 2;
-	point->proy_x = cam->x + ((prev_x - point->proy_y) * (tile_size)) + half_width;
-	point->proy_y = cam->y + half_height + (((prev_x + point->proy_y) * (tile_size) - (point->z * height_factor)) / 2);
+	prev_x = pnt->proy_x;
+	h_wdth = WIN_WIDTH / 2;
+	h_hght = WIN_HEIGHT / 2;
+	pnt->proy_x = cam->x + ((prev_x - pnt->proy_y) * (t_sze)) + h_wdth;
+	pnt->proy_y = cam->y + h_hght + (((prev_x + pnt->proy_y)
+				* (t_sze) - (pnt->z * v_sze)) / 2);
 }
 
 void	ft_project_iso(t_map *map, t_cam *cam)
 {
 	int		i;
 	int		j;
-	float	height_factor;
+	double	height_factor;
 
 	j = -1;
 	ft_rotate_map(map, cam->angle);
-	if (map->min_z * -1 > map->max_z)
-		height_factor = WIN_HEIGHT / map->min_z * -1;
+	if (fabs(map->min_z) > fabs(map->max_z))
+		height_factor = 1 / fabs(map->min_z);
 	else
-		height_factor = WIN_HEIGHT / map->max_z;
-	height_factor /= 2.0;
-	if (isinf(height_factor))
-		height_factor = 1;
+		height_factor = 1 / fabs(map->max_z);
+	height_factor *= map->h_tile_size;
+	if (isinf(height_factor) || height_factor < 10)
+		height_factor = map->h_tile_size;
 	while (++j < map->height)
 	{
 		i = -1;
 		while (++i < map->width)
-			ft_project_point_iso(&map->arr[j][i], map->h_tile_size, height_factor, cam);
+			proj_pnt_iso(&map->arr[j][i],
+				map->h_tile_size, height_factor, cam);
 	}
 }
 

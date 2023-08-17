@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   help.c                                             :+:      :+:    :+:   */
+/*   math_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/28 17:02:38 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 13:59:29 by sacorder         ###   ########.fr       */
+/*   Created: 2023/08/17 17:51:11 by sacorder          #+#    #+#             */
+/*   Updated: 2023/08/17 17:51:29 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 
-void	ft_menu_img(t_fdf *fdf)
+double	fpart(float x)
 {
-	(void) fdf;
+	return (x - floor(x));
+}
+
+double	rfpart(float x)
+{
+	return (1 - fpart(x));
 }
