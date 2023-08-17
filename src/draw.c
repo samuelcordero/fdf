@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 17:44:48 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/17 22:05:26 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@ static void	render_black_background(t_img *img)
 	int	i;
 	int	j;
 
-	i = 0;
-	while (i < WIN_HEIGHT)
+	i = -1;
+	while (++i < WIN_HEIGHT)
 	{
-		j = 0;
-		while (j < WIN_WIDTH)
-			img_pix_put(img, j++, i, 0x000000);
-		++i;
+		j = -1;
+		while (++j < WIN_WIDTH)
+			img_pix_put(img, j, i, 0x000000);
 	}
 }
 
@@ -57,6 +56,8 @@ void	render_fdf(t_fdf *fdf)
 		i = -1;
 		while (++i < fdf->map->width)
 		{
+			img_pix_put(&fdf->img, (int)fdf->map->arr[j][i].proy_x,
+				(int)fdf->map->arr[j][i].proy_y, fdf->map->arr[j][i].color);
 			if (j + 1 < fdf->map->height
 				&& !both_invisible(&fdf->map->arr[j][i],
 				&fdf->map->arr[j + 1][i]))

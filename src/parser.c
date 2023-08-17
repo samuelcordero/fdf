@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 18:40:39 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/17 22:02:23 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	ft_array_len(char **arr)
 {
-	int counter;
+	int	counter;
 
 	counter = 0;
 	if (!arr)
@@ -24,7 +24,7 @@ static int	ft_array_len(char **arr)
 	return (counter);
 }
 
-static t_point ft_str2point(int x, int y, char *str)
+static t_point	ft_str2point(int x, int y, char *str)
 {
 	t_point	this;
 	char	**splited;
@@ -49,8 +49,8 @@ static t_point ft_str2point(int x, int y, char *str)
 
 static void	ft_str2maprow(t_map *map, char *str, int row)
 {
-	int	pos;
-	char **splited;
+	int		pos;
+	char	**splited;
 
 	pos = -1;
 	if (!str)
@@ -74,20 +74,20 @@ static void	ft_str2maprow(t_map *map, char *str, int row)
 	ft_free_array(splited);
 }
 
-static t_point **ft_realloc_maparr(t_point **arr, int *row_size)
+static t_point	**ft_realloc_maparr(t_point **arr, int *row_size)
 {
-	int	new_size;
+	int		new_size;
 	t_point	**res;
-	int	pos;
+	int		pos;
 
-	if (*row_size >= 2147483647/2)
+	if (*row_size >= 2147483647 / 2)
 		new_size = 2147483647 - 1;
 	else
 		new_size = *row_size * 2;
 	pos = -1;
 	res = malloc(sizeof(t_point *) * (new_size + 1));
 	if (!res)
-		return(NULL);
+		return (NULL);
 	while (++pos < *row_size)
 		res[pos] = arr[pos];
 	free(arr);
@@ -109,7 +109,8 @@ void	recheck_colors(t_map *map)
 		{
 			if (map->arr[j][i].color == -1)
 				map->arr[j][i].color = intrpol_col(0xFF0000, 0x0000FF,
-					fabs(map->arr[j][i].z) / fabs (map->max_z - map->min_z), 1);
+						fabs(map->arr[j][i].z - map->min_z)
+						/ fabs (map->max_z - map->min_z), 1);
 		}
 	}
 }
@@ -141,10 +142,11 @@ t_map	*parse_map(int fd)
 	}
 	res->arr[row] = NULL;
 	res->height = row;
-	if ((float) WIN_HEIGHT / (float) res->height > (float) WIN_WIDTH / (float) res->width)
-		res->h_tile_size =  0.5 * (float) (WIN_WIDTH - 60) / (float) res->width;
+	if ((float) WIN_HEIGHT / (float) res->height
+		> (float) WIN_WIDTH / (float) res->width)
+		res->h_tile_size = 0.5 * (float)(WIN_WIDTH) / (float)res->width;
 	else
-		res->h_tile_size = 0.8 * (float) (WIN_HEIGHT - 60) / (float) res->height;
+		res->h_tile_size = 0.7 * (float)(WIN_HEIGHT) / (float)res->height;
 	res->og_tile_size = res->h_tile_size;
 	recheck_colors(res);
 	return (res);

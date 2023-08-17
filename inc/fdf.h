@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 18:47:55 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/17 22:14:12 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define FDF_H
 # define WIN_WIDTH 1800
 # define WIN_HEIGHT 1000
+# define PI 3.141592
 
 //key definitions
 # ifndef MAC_OS
