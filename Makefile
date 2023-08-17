@@ -6,7 +6,7 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/08/17 17:52:27 by sacorder         ###   ########.fr        #
+#    Updated: 2023/08/17 18:49:08 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,4 +64,7 @@ fclean: clean
 re:: fclean
 re:: all
 
-.PHONY: all clean fclean re
+normi:
+	@norminette src inc libft
+
+.PHONY: all clean fclean re normi

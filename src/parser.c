@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 13:48:05 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:40:39 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,14 @@ static t_point ft_str2point(int x, int y, char *str)
 		this.color = ft_atoi_base(splited[1], "0123456789ABCDEF");
 		if (this.color == -1)
 			this.color = ft_atoi_base(splited[1], "0123456789abcdef");
-		if (this.color == -1)
-			this.color = 0xFFFFFF;
 	}
 	else
-		this.color = 0xFFFFFF;
+		this.color = -1;
 	ft_free_array(splited);
 	return (this);
 }
 
-static void		ft_str2maprow(t_map *map, char *str, int row)
+static void	ft_str2maprow(t_map *map, char *str, int row)
 {
 	int	pos;
 	char **splited;
@@ -98,6 +96,24 @@ static t_point **ft_realloc_maparr(t_point **arr, int *row_size)
 	return (res);
 }
 
+void	recheck_colors(t_map *map)
+{
+	int	i;
+	int	j;
+
+	j = -1;
+	while (++j < map->height)
+	{
+		i = -1;
+		while (++i < map->width)
+		{
+			if (map->arr[j][i].color == -1)
+				map->arr[j][i].color = intrpol_col(0xFF0000, 0x0000FF,
+					fabs(map->arr[j][i].z) / fabs (map->max_z - map->min_z), 1);
+		}
+	}
+}
+
 t_map	*parse_map(int fd)
 {
 	t_map	*res;
@@ -130,5 +146,6 @@ t_map	*parse_map(int fd)
 	else
 		res->h_tile_size = 0.8 * (float) (WIN_HEIGHT - 60) / (float) res->height;
 	res->og_tile_size = res->h_tile_size;
+	recheck_colors(res);
 	return (res);
 }

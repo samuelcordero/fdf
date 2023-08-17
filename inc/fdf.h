@@ -6,10 +6,9 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 17:52:01 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/17 18:47:55 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef FDF_H
 # define FDF_H
@@ -58,7 +57,7 @@ typedef struct s_camera
 	double	angle;
 	int		x;
 	int		y;
-} t_cam;
+}	t_cam;
 
 typedef struct s_img
 {
@@ -67,7 +66,7 @@ typedef struct s_img
 	int		bpp;
 	int		line_len;
 	int		endian;
-} t_img;
+}	t_img;
 
 typedef struct s_point
 {
@@ -77,19 +76,18 @@ typedef struct s_point
 	double	proy_x;
 	double	proy_y;
 	int		color;
-} t_point;
-
+}	t_point;
 
 typedef struct s_map
 {
-	t_point **arr;
-	int width;
-	int height;
-	double max_z;
-	double min_z;
-	double h_tile_size;
-	double og_tile_size;
-} t_map;
+	t_point	**arr;
+	int		width;
+	int		height;
+	double	max_z;
+	double	min_z;
+	double	h_tile_size;
+	double	og_tile_size;
+}	t_map;
 
 typedef struct s_fdf
 {
@@ -98,7 +96,7 @@ typedef struct s_fdf
 	void	*win_ptr;
 	t_img	img;
 	t_cam	cam;
-} t_fdf;
+}	t_fdf;
 
 typedef struct s_xialinwusup
 {
@@ -112,9 +110,9 @@ typedef struct s_xialinwusup
 	double	intery;
 	double	dx;
 	double	dy;
-	double 	gradient;
+	double	gradient;
 	char	steep;
-} t_xlsup;
+}	t_xlsup;
 
 //draw.c
 
@@ -130,8 +128,6 @@ void	ft_project_iso(t_map *map, t_cam *cam);
 void	ft_free_array(char **array);
 int		ft_atoi_base(char *str, char *base);
 int		intrpol_col(int acol, int bcol, double t, double brght);
-int		both_invisible(t_point *a, t_point *b);
-
 
 //parser.c
 
@@ -150,5 +146,6 @@ void	render_wu_line(t_img *img, t_point a, t_point b);
 
 double	fpart(float x);
 double	rfpart(float x);
+int		both_invisible(t_point *a, t_point *b);
 
 #endif
