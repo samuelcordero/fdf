@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 22:14:12 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/18 15:04:03 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define FDF_H
 # define WIN_WIDTH 1800
 # define WIN_HEIGHT 1000
-# define PI 3.141592
+# define PI 6.28
 
 //key definitions
 # ifndef MAC_OS
@@ -43,7 +43,7 @@
 #  define MOVE_RIGHT 2
 #  define ZOOM_OUT 7
 #  define ZOOM_IN 6
-#  define RESET_CAM 114 //CHECK
+#  define RESET_CAM 15
 
 #  define WHEEL_UP 3
 #  define WHEEL_DOWN 4

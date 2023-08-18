@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:08:40 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 13:59:15 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/18 12:38:06 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 
 int	ft_input_hook(int keycode, t_fdf *fdf)
 {
-	ft_printf("Key code: %i\n", keycode);
+	//ft_printf("Key code: %i\n", keycode);
 	if (keycode == ESCAPE)
 		hook_exit(fdf);
 	kb_rotations_hook(keycode, fdf);

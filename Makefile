@@ -6,7 +6,7 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/08/17 18:49:08 by sacorder         ###   ########.fr        #
+#    Updated: 2023/08/18 15:02:30 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,11 +44,11 @@ $(MINILIBX):
 	@make -C $(MINILIB_PATH)
 	
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJ) $(INCLUDE) 
-	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) -o $(NAME) $(LD)
+	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) -o $(NAME) $(LD) || say es como fuck
 
 
 %.o: %.c
-	$(CC) $(FLAGS) -c -o $@ $<
+	$(CC) $(FLAGS) -c -o $@ $< || say es como fuck
 
 clean:
 	@make clean -C ./libft
