@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/23 18:33:17 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/24 00:43:06 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@
 # define WIN_HEIGHT 1000
 # define PI 3.14
 # define PI2 6.28
-# define PIo4 PI / 4.0
+# define PIo4 0.785
 
 //key definitions
 # ifndef MAC_OS
 #  define ESCAPE 65307
 #  define HELP_KEY 72
-#  define ROTATE_LEFT 113
-#  define ROTATE_RIGHT 101
+#  define ROTATE_LEFT 101
+#  define ROTATE_RIGHT 113
 #  define MOVE_UP 119
 #  define MOVE_DOWN 115
 #  define MOVE_LEFT 97
@@ -37,8 +37,8 @@
 # else
 #  define ESCAPE 53
 #  define HELP_KEY 72
-#  define ROTATE_LEFT 12
-#  define ROTATE_RIGHT 14
+#  define ROTATE_LEFT 14
+#  define ROTATE_RIGHT 12
 #  define MOVE_UP 13
 #  define MOVE_DOWN 1
 #  define MOVE_LEFT 0
