@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:36:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 18:05:18 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:27:45 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ static void	ft_rotate_map(t_map *map, double *angle)
 	half_height = map->height / 2;
 	half_width = map->width / 2;
 	j = -1;
-	if (*angle >= PI)
-		*angle -= PI;
+	if (*angle >= PI2)
+		*angle -= PI2;
 	else if (*angle < 0)
-		*angle += PI;
-  printf("Angle:%f\n", *angle);
+		*angle += PI2;
 	while (++j < map->height)
 	{
 		i = -1;

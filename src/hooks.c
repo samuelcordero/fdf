@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:08:40 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/18 12:38:06 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:09:48 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 			fdf->map->h_tile_size -= 1;
 	}
 	else if (key == ROTATE_LEFT)
-		fdf->cam.angle += 0.05;
+		fdf->cam.angle += 0.02;
 	else if (key == ROTATE_RIGHT)
-		fdf->cam.angle -= 0.05;
+		fdf->cam.angle -= 0.02;
 	else if (key == MOVE_DOWN)
 		fdf->cam.y -= 10;
 	else if (key == MOVE_UP)

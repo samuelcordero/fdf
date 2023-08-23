@@ -6,14 +6,14 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/08/18 15:02:30 by sacorder         ###   ########.fr        #
+#    Updated: 2023/08/23 18:38:22 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 LIBFT = libft/libft.a
 LD = -L libft -lft -lm
 NAME = fdf
-FLAGS = -Wall -Wextra -Werror -O2 #-g -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -O3 #-g3 -fsanitize=address
 INCLUDE = inc/fdf.h 
 SRC = src/main.c src/parser.c src/draw.c src/transform.c src/utils.c src/hooks.c src/wu_line.c src/math_utils.c #src/help.c #src/mousehooks.c src/kbhooks.c
 OBJ = $(SRC:.c=.o)

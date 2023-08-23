@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/18 15:03:53 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/23 18:37:59 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,9 @@ static void	render_fdf_left(t_fdf *fdf)
 					fdf->map->arr[j - 1][i]);
 			if (i + 1 < fdf->map->width
 				&& !both_invisible(&fdf->map->arr[j][i],
-				&fdf->map->arr[j][i - 1]))
+				&fdf->map->arr[j][i + 1]))
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
-					fdf->map->arr[j][i - 1]);
+					fdf->map->arr[j][i + 1]);
 		}
 	}
 }
@@ -163,14 +163,15 @@ int	render(t_fdf *fdf)
 		return (1);
 	render_black_background(&fdf->img);
 	ft_project_iso(fdf->map, &fdf->cam);
-	if (fdf->cam.angle >= 0.0 && fdf->cam.angle < PI / 2.0) //[[0.0, 1.57)
+	printf("Angle:%f\n", fdf->cam.angle);
+	if (fdf->cam.angle >= PI2 - PIo4 || fdf->cam.angle < PIo4) //[[-PI/4, +PI/4)
 		render_fdf_down(fdf);
-	else if (fdf->cam.angle >= PI / 2.0 && fdf->cam.angle < PI) //[[1.57, 3.14)
+	else if (fdf->cam.angle >= PIo4 && fdf->cam.angle < PI - PIo4) //[[+PI/4, PI/2+ PI/4)
 		render_fdf_left(fdf);
-	else if (fdf->cam.angle >= PI && fdf->cam.angle < PI + (PI / 2.0)) //[[3.14, 4.71)
-		render_fdf_up(fdf); //fails to draw one edge
-	else if (fdf->cam.angle >= PI + (PI / 2.0)) //[[4.71, 6.28)
-		render_fdf_right(fdf); //fails to draw one edge
+	else if (fdf->cam.angle >= PI - PIo4 && fdf->cam.angle < PI + PIo4) //[[3.14, 4.71)
+		render_fdf_up(fdf); 
+	else if (fdf->cam.angle >= PI + PIo4 && fdf->cam.angle < PI2 - PIo4) //[[4.71, 6.28)
+		render_fdf_right(fdf); 
 	mlx_put_image_to_window(fdf->mlx, fdf->win_ptr, fdf->img.mlx_img, 0, 0);
   return (0);
 }
