@@ -45,6 +45,7 @@ static void	render_black_background(t_img *img)
 	}
 }
 
+//from map[0][0] to map[map.height - 1][map.width - 1] 
 static void	render_fdf_down(t_fdf *fdf)
 {
 	int	i;
@@ -72,6 +73,7 @@ static void	render_fdf_down(t_fdf *fdf)
 	}
 }
 
+//from map[map.height - 1][map.width - 1] to map[0][0]
 static void	render_fdf_up(t_fdf *fdf)
 {
 	int	i;
@@ -85,12 +87,12 @@ static void	render_fdf_up(t_fdf *fdf)
 		{
 			img_pix_put(&fdf->img, (int)fdf->map->arr[j][i].proy_x,
 				(int)fdf->map->arr[j][i].proy_y, fdf->map->arr[j][i].color);
-			if (j - 1 > 0
+			if (j - 1 >= 0
 				&& !both_invisible(&fdf->map->arr[j][i],
 				&fdf->map->arr[j - 1][i]))
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
 					fdf->map->arr[j - 1][i]);
-			if (i - 1 > 0
+			if (i - 1 >= 0
 				&& !both_invisible(&fdf->map->arr[j][i],
 				&fdf->map->arr[j][i - 1]))
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
@@ -99,6 +101,7 @@ static void	render_fdf_up(t_fdf *fdf)
 	}
 }
 
+//from map[map.height - 1][0] to map[0][map.width - 1] 
 static void	render_fdf_left(t_fdf *fdf)
 {
 	int	i;
@@ -112,12 +115,12 @@ static void	render_fdf_left(t_fdf *fdf)
 		{
 			img_pix_put(&fdf->img, (int)fdf->map->arr[j][i].proy_x,
 				(int)fdf->map->arr[j][i].proy_y, fdf->map->arr[j][i].color);
-			if (j - 1 > 0
+			if (j - 1 >= 0
 				&& !both_invisible(&fdf->map->arr[j][i],
 				&fdf->map->arr[j - 1][i]))
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
 					fdf->map->arr[j - 1][i]);
-			if (i - 1 > 0
+			if (i + 1 < fdf->map->width
 				&& !both_invisible(&fdf->map->arr[j][i],
 				&fdf->map->arr[j][i - 1]))
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
@@ -126,6 +129,7 @@ static void	render_fdf_left(t_fdf *fdf)
 	}
 }
 
+//from map[0][0] to map[map.height - 1][map.width - 1] 
 static void	render_fdf_right(t_fdf *fdf)
 {
 	int	i;
@@ -139,16 +143,16 @@ static void	render_fdf_right(t_fdf *fdf)
 		{
 			img_pix_put(&fdf->img, (int)fdf->map->arr[j][i].proy_x,
 				(int)fdf->map->arr[j][i].proy_y, fdf->map->arr[j][i].color);
-			if (j - 1 > 0
+			if (j + 1 < fdf->map->height
 				&& !both_invisible(&fdf->map->arr[j][i],
-				&fdf->map->arr[j - 1][i]))
+				&fdf->map->arr[j + 1][i]))
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
-					fdf->map->arr[j - 1][i]);
-			if (i - 1 > 0
-				&& !both_invisible(&fdf->map->arr[j][i],
-				&fdf->map->arr[j][i - 1]))
-				render_wu_line(&fdf->img, fdf->map->arr[j][i],
-					fdf->map->arr[j][i - 1]);
+					fdf->map->arr[j + 1][i]);
+			if (i - 1 >= 0
+				&& !both_invisible(&fdf->map->arr[j][i - 1],
+				&fdf->map->arr[j][i]))
+				render_wu_line(&fdf->img, fdf->map->arr[j][i - 1],
+					fdf->map->arr[j][i]);
 		}
 	}
 }
@@ -159,19 +163,14 @@ int	render(t_fdf *fdf)
 		return (1);
 	render_black_background(&fdf->img);
 	ft_project_iso(fdf->map, &fdf->cam);
-	if (fdf->cam.angle >= PI)
-		fdf->cam.angle -= PI;
-	else if (fdf->cam.angle < 0)
-		fdf->cam.angle += PI;
-	printf("Angle: %f\n", fdf->cam.angle);
-	if (fdf->cam.angle >= 0 && fdf->cam.angle < PI / 2)
-		render_fdf_up(fdf);
-	else if (fdf->cam.angle >= PI / 2 && fdf->cam.angle < PI)
-		render_fdf_right(fdf);
-	else if (fdf->cam.angle >= PI && fdf->cam.angle < PI + (PI / 2))
+	if (fdf->cam.angle >= 0.0 && fdf->cam.angle < PI / 2.0) //[[0.0, 1.57)
 		render_fdf_down(fdf);
-	else if (fdf->cam.angle >= PI + (PI / 2))
+	else if (fdf->cam.angle >= PI / 2.0 && fdf->cam.angle < PI) //[[1.57, 3.14)
 		render_fdf_left(fdf);
+	else if (fdf->cam.angle >= PI && fdf->cam.angle < PI + (PI / 2.0)) //[[3.14, 4.71)
+		render_fdf_up(fdf); //fails to draw one edge
+	else if (fdf->cam.angle >= PI + (PI / 2.0)) //[[4.71, 6.28)
+		render_fdf_right(fdf); //fails to draw one edge
 	mlx_put_image_to_window(fdf->mlx, fdf->win_ptr, fdf->img.mlx_img, 0, 0);
-	return (0);
+  return (0);
 }

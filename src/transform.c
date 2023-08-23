@@ -18,9 +18,10 @@ static void	ft_rotate_point(t_point *pnt, double ang, int h_wdth, int h_hght)
 		- (sin(ang) * (pnt->y - h_hght));
 	pnt->proy_y = (sin(ang) * (pnt->x - h_wdth))
 		+ (cos(ang) * (pnt->y - h_hght));
+  //printf("Cos: %f sin: %f proy x,y: %f %f\n", cos(ang), sin(ang), pnt->proy_x, pnt->proy_y);
 }
 
-static void	ft_rotate_map(t_map *map, double angle)
+static void	ft_rotate_map(t_map *map, double *angle)
 {
 	int	i;
 	int	j;
@@ -30,11 +31,16 @@ static void	ft_rotate_map(t_map *map, double angle)
 	half_height = map->height / 2;
 	half_width = map->width / 2;
 	j = -1;
+	if (*angle >= PI)
+		*angle -= PI;
+	else if (*angle < 0)
+		*angle += PI;
+  printf("Angle:%f\n", *angle);
 	while (++j < map->height)
 	{
 		i = -1;
 		while (++i < map->width)
-			ft_rotate_point(&map->arr[j][i], angle, half_width, half_height);
+			ft_rotate_point(&map->arr[j][i], *angle, half_width, half_height);
 	}
 }
 
@@ -59,7 +65,7 @@ void	ft_project_iso(t_map *map, t_cam *cam)
 	double	height_factor;
 
 	j = -1;
-	ft_rotate_map(map, cam->angle);
+	ft_rotate_map(map, &(cam->angle));
 	if (fabs(map->min_z) > fabs(map->max_z))
 		height_factor = 1 / fabs(map->min_z);
 	else
