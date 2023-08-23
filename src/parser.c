@@ -111,6 +111,8 @@ void	recheck_colors(t_map *map)
 				map->arr[j][i].color = intrpol_col(0xFF0000, 0x0000FF,
 						fabs(map->arr[j][i].z - map->min_z)
 						/ fabs (map->max_z - map->min_z), 1);
+      if (map->arr[j][i].color <= 0)
+        map->arr[j][i].color = 0x880088;
 		}
 	}
 }

@@ -13,7 +13,7 @@
 LIBFT = libft/libft.a
 LD = -L libft -lft -lm
 NAME = fdf
-FLAGS = -Wall -Wextra -Werror -O3 #-g3 -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -O3 -g3 -fsanitize=address
 INCLUDE = inc/fdf.h 
 SRC = src/main.c src/parser.c src/draw.c src/transform.c src/utils.c src/hooks.c src/wu_line.c src/math_utils.c #src/help.c #src/mousehooks.c src/kbhooks.c
 OBJ = $(SRC:.c=.o)
@@ -44,11 +44,11 @@ $(MINILIBX):
 	@make -C $(MINILIB_PATH)
 	
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJ) $(INCLUDE) 
-	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) -o $(NAME) $(LD) || say es como fuck
+	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) -o $(NAME) $(LD)
 
 
 %.o: %.c
-	$(CC) $(FLAGS) -c -o $@ $< || say es como fuck
+	$(CC) $(FLAGS) -c -o $@ $<
 
 clean:
 	@make clean -C ./libft

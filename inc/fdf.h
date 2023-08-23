@@ -149,6 +149,5 @@ void	render_wu_line(t_img *img, t_point a, t_point b);
 
 double	fpart(float x);
 double	rfpart(float x);
-int		both_invisible(t_point *a, t_point *b);
 
 #endif

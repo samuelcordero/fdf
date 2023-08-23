@@ -59,14 +59,10 @@ static void	render_fdf_down(t_fdf *fdf)
 		{
 			img_pix_put(&fdf->img, (int)fdf->map->arr[j][i].proy_x,
 				(int)fdf->map->arr[j][i].proy_y, fdf->map->arr[j][i].color);
-			if (j + 1 < fdf->map->height
-				&& !both_invisible(&fdf->map->arr[j][i],
-				&fdf->map->arr[j + 1][i]))
+			if (j + 1 < fdf->map->height)
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
 					fdf->map->arr[j + 1][i]);
-			if (i + 1 < fdf->map->width
-				&& !both_invisible(&fdf->map->arr[j][i],
-				&fdf->map->arr[j][i + 1]))
+			if (i + 1 < fdf->map->width)
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
 					fdf->map->arr[j][i + 1]);
 		}
@@ -87,14 +83,10 @@ static void	render_fdf_up(t_fdf *fdf)
 		{
 			img_pix_put(&fdf->img, (int)fdf->map->arr[j][i].proy_x,
 				(int)fdf->map->arr[j][i].proy_y, fdf->map->arr[j][i].color);
-			if (j - 1 >= 0
-				&& !both_invisible(&fdf->map->arr[j][i],
-				&fdf->map->arr[j - 1][i]))
+			if (j - 1 >= 0)
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
 					fdf->map->arr[j - 1][i]);
-			if (i - 1 >= 0
-				&& !both_invisible(&fdf->map->arr[j][i],
-				&fdf->map->arr[j][i - 1]))
+			if (i - 1 >= 0)
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
 					fdf->map->arr[j][i - 1]);
 		}
@@ -115,14 +107,10 @@ static void	render_fdf_left(t_fdf *fdf)
 		{
 			img_pix_put(&fdf->img, (int)fdf->map->arr[j][i].proy_x,
 				(int)fdf->map->arr[j][i].proy_y, fdf->map->arr[j][i].color);
-			if (j - 1 >= 0
-				&& !both_invisible(&fdf->map->arr[j][i],
-				&fdf->map->arr[j - 1][i]))
+			if (j - 1 >= 0)
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
 					fdf->map->arr[j - 1][i]);
-			if (i + 1 < fdf->map->width
-				&& !both_invisible(&fdf->map->arr[j][i],
-				&fdf->map->arr[j][i + 1]))
+			if (i + 1 < fdf->map->width)
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
 					fdf->map->arr[j][i + 1]);
 		}
@@ -143,14 +131,10 @@ static void	render_fdf_right(t_fdf *fdf)
 		{
 			img_pix_put(&fdf->img, (int)fdf->map->arr[j][i].proy_x,
 				(int)fdf->map->arr[j][i].proy_y, fdf->map->arr[j][i].color);
-			if (j + 1 < fdf->map->height
-				&& !both_invisible(&fdf->map->arr[j][i],
-				&fdf->map->arr[j + 1][i]))
+			if (j + 1 < fdf->map->height)
 				render_wu_line(&fdf->img, fdf->map->arr[j][i],
 					fdf->map->arr[j + 1][i]);
-			if (i - 1 >= 0
-				&& !both_invisible(&fdf->map->arr[j][i - 1],
-				&fdf->map->arr[j][i]))
+			if (i - 1 >= 0)
 				render_wu_line(&fdf->img, fdf->map->arr[j][i - 1],
 					fdf->map->arr[j][i]);
 		}
@@ -163,7 +147,6 @@ int	render(t_fdf *fdf)
 		return (1);
 	render_black_background(&fdf->img);
 	ft_project_iso(fdf->map, &fdf->cam);
-	printf("Angle:%f\n", fdf->cam.angle);
 	if (fdf->cam.angle >= PI2 - PIo4 || fdf->cam.angle < PIo4) //[[-PI/4, +PI/4)
 		render_fdf_down(fdf);
 	else if (fdf->cam.angle >= PIo4 && fdf->cam.angle < PI - PIo4) //[[+PI/4, PI/2+ PI/4)
