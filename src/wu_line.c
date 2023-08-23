@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 17:35:00 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/24 00:32:12 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/24 01:01:56 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,8 @@ void	render_wu_line(t_img *img, t_point a, t_point b)
 		origin = &b;
 		end = &a;
 	}
+	if (fabs(b.proy_x - a.proy_x) <= 1.0 && fabs(b.proy_y - a.proy_y) <= 1.0)
+		return ;
 	if (tmp)
 		render_high_steep_wu_line(img, origin, end);
 	else
