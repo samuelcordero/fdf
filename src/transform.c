@@ -56,12 +56,12 @@ static void	proj_pnt(t_point *pnt, double t_sze, double v_sze, t_cam *cam)
 	{
 		pnt->proy_x = cam->x + ((prev_x - pnt->proy_y) * (t_sze)) + h_wdth;
 		pnt->proy_y = cam->y + h_hght + (((prev_x + pnt->proy_y)
-					* (t_sze) - (pnt->z * v_sze)) / 2);
+					* (t_sze) - (pnt->z * v_sze)) * 0.5);
 	}
 	else
 	{
-		pnt->proy_x = cam->x + h_wdth + pnt->proy_x * t_sze;
-		pnt->proy_y = cam->y + h_hght + pnt->proy_y * t_sze;
+		pnt->proy_x = cam->x + ((prev_x - pnt->proy_y) * (t_sze)) + h_wdth + (pnt->z * v_sze * 0.5);
+		pnt->proy_y = cam->y + h_hght + ((prev_x + pnt->proy_y) * t_sze) - (pnt->z * v_sze * 0.5);
 	}
 }
 
