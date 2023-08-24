@@ -30,6 +30,7 @@ static void	init(t_fdf *fdf)
 	fdf->cam.x = 0;
 	fdf->cam.y = 0;
 	fdf->cam.angle = 0.0;
+	fdf->cam.mode = 1;
 }
 
 int	main(int argc, char **argv)

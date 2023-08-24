@@ -37,9 +37,9 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 			fdf->map->h_tile_size -= 1;
 	}
 	else if (key == ROTATE_LEFT)
-		fdf->cam.angle += 0.02;
+		fdf->cam.angle += 0.03;
 	else if (key == ROTATE_RIGHT)
-		fdf->cam.angle -= 0.02;
+		fdf->cam.angle -= 0.03;
 	else if (key == MOVE_DOWN)
 		fdf->cam.y -= 10;
 	else if (key == MOVE_UP)
@@ -50,11 +50,13 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 		fdf->cam.x -= 10;
 	else if (key == RESET_CAM)
 		reset_cam(fdf);
+	else if (key == CHANGE_PROJ)
+		fdf->cam.mode = !fdf->cam.mode;
 }
 
 int	ft_input_hook(int keycode, t_fdf *fdf)
 {
-	//ft_printf("Key code: %i\n", keycode);
+	ft_printf("Key code: %i\n", keycode);
 	if (keycode == ESCAPE)
 		hook_exit(fdf);
 	kb_rotations_hook(keycode, fdf);

@@ -31,6 +31,7 @@
 #  define ZOOM_OUT 120
 #  define ZOOM_IN 122
 #  define RESET_CAM 114
+#  define CHANGE_PROJ 112
 
 #  define WHEEL_UP 3
 #  define WHEEL_DOWN 4
@@ -46,6 +47,7 @@
 #  define ZOOM_OUT 7
 #  define ZOOM_IN 6
 #  define RESET_CAM 15
+#  define CHANGE_PROJ 20 //check
 
 #  define WHEEL_UP 3
 #  define WHEEL_DOWN 4
@@ -60,6 +62,7 @@ typedef struct s_camera
 	double	angle;
 	int		x;
 	int		y;
+	char	mode;
 }	t_cam;
 
 typedef struct s_img
@@ -124,7 +127,7 @@ int		render(t_fdf *fdf);
 
 //project.c
 
-void	ft_project_iso(t_map *map, t_cam *cam);
+void	ft_project(t_map *map, t_cam *cam);
 
 //utils.c
 
@@ -149,5 +152,6 @@ void	render_wu_line(t_img *img, t_point a, t_point b);
 
 double	fpart(float x);
 double	rfpart(float x);
+int			both_invisible(t_point *a, t_point *b);
 
 #endif

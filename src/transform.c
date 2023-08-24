@@ -43,7 +43,7 @@ static void	ft_rotate_map(t_map *map, double *angle)
 	}
 }
 
-static void	proj_pnt_iso(t_point *pnt, double t_sze, double v_sze, t_cam *cam)
+static void	proj_pnt(t_point *pnt, double t_sze, double v_sze, t_cam *cam)
 {
 	double	prev_x;
 	int		h_wdth;
@@ -52,12 +52,20 @@ static void	proj_pnt_iso(t_point *pnt, double t_sze, double v_sze, t_cam *cam)
 	prev_x = pnt->proy_x;
 	h_wdth = WIN_WIDTH / 2;
 	h_hght = WIN_HEIGHT / 2;
-	pnt->proy_x = cam->x + ((prev_x - pnt->proy_y) * (t_sze)) + h_wdth;
-	pnt->proy_y = cam->y + h_hght + (((prev_x + pnt->proy_y)
-				* (t_sze) - (pnt->z * v_sze)) / 2);
+	if (cam->mode)
+	{
+		pnt->proy_x = cam->x + ((prev_x - pnt->proy_y) * (t_sze)) + h_wdth;
+		pnt->proy_y = cam->y + h_hght + (((prev_x + pnt->proy_y)
+					* (t_sze) - (pnt->z * v_sze)) / 2);
+	}
+	else
+	{
+		pnt->proy_x = cam->x + h_wdth + pnt->proy_x * t_sze;
+		pnt->proy_y = cam->y + h_hght + pnt->proy_y * t_sze;
+	}
 }
 
-void	ft_project_iso(t_map *map, t_cam *cam)
+void	ft_project(t_map *map, t_cam *cam)
 {
 	int		i;
 	int		j;
@@ -65,18 +73,12 @@ void	ft_project_iso(t_map *map, t_cam *cam)
 
 	j = -1;
 	ft_rotate_map(map, &(cam->angle));
-	if (fabs(map->min_z) > fabs(map->max_z))
-		height_factor = 1 / fabs(map->min_z);
-	else
-		height_factor = 1 / fabs(map->max_z);
-	height_factor *= map->h_tile_size;
-	if (isinf(height_factor) || height_factor < 10)
-		height_factor = map->h_tile_size;
+	height_factor = map->h_tile_size;
 	while (++j < map->height)
 	{
 		i = -1;
 		while (++i < map->width)
-			proj_pnt_iso(&map->arr[j][i],
+			proj_pnt(&map->arr[j][i],
 				map->h_tile_size, height_factor, cam);
 	}
 }
