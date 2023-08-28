@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 17:51:11 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 11:47:03 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:34:23 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,16 @@ int	both_invisible(t_point *a, t_point *b)
 		|| (a->proy_y >= WIN_HEIGHT && b->proy_y >= WIN_HEIGHT))
 		return (1);
 	return (0);
+}
+
+int	ft_array_len(char **arr)
+{
+	int	counter;
+
+	counter = 0;
+	if (!arr)
+		return (counter);
+	while (arr[counter])
+		++counter;
+	return (counter);
 }

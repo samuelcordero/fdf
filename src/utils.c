@@ -6,23 +6,11 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 14:29:58 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 11:50:06 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:35:44 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
-
-int	ft_array_len(char **arr)
-{
-	int	counter;
-
-	counter = 0;
-	if (!arr)
-		return (counter);
-	while (arr[counter])
-		++counter;
-	return (counter);
-}
 
 void	ft_free_array(char **array)
 {
@@ -95,4 +83,26 @@ int	intrpol_col(int acol, int bcol, double t, double brght)
 	pb = (int)(((acol & 0xFF) * t
 				+ (bcol & 0xFF) * (1 - t)) * brght);
 	return ((pr << 16) | (pg << 8) | pb);
+}
+
+t_point	**ft_realloc_maparr(t_point **arr, int *row_size)
+{
+	int		new_size;
+	t_point	**res;
+	int		pos;
+
+	if (*row_size >= (2147483647 / 2))
+		new_size = 2147483647 - 1;
+	else
+		new_size = *row_size * 2;
+	pos = -1;
+	res = malloc(sizeof(t_point *) * (new_size + 1));
+	if (!res)
+		return (free(arr), NULL);
+	while (++pos < *row_size)
+		res[pos] = arr[pos];
+	free(arr);
+	*row_size = new_size;
+	res[new_size] = NULL;
+	return (res);
 }

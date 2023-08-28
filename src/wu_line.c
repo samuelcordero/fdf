@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 17:35:00 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 11:45:58 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:38:58 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static void	wu_startpnt(t_img *img, t_point *a, t_point *b, t_xlsup *sup)
 	sup->yend = a->proy_y + sup->gradient * ((double) sup->xend - a->proy_x);
 	sup->xgap = rfpart(a->proy_x + 0.5);
 	sup->xpxl1 = sup->xend;
+	sup->startingx = sup->xpxl1;
 	sup->ypxl1 = floor(sup->yend);
 	if (sup->steep)
 	{
@@ -80,7 +81,7 @@ static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
 	while (sup.xpxl1 < sup.xpxl2 -1)
 	{
 		t = (double) abs(sup.xpxl2 - sup.xpxl1)
-			/ (double) abs(sup.xpxl2 - sup.xpxl1);
+			/ (double) abs(sup.xpxl2 - sup.startingx);
 		img_pix_put(img, floor(sup.intery), sup.xpxl1,
 			intrpol_col(a->color, b->color, t, rfpart(sup.intery)));
 		img_pix_put(img, floor(sup.intery) + 1, sup.xpxl1, intrpol_col(a->color,
@@ -109,7 +110,7 @@ static void	render_low_steep_wu_line(t_img *img, t_point *a, t_point *b)
 	while (sup.xpxl1 < sup.xpxl2 -1)
 	{
 		t = (double) abs(sup.xpxl2 - sup.xpxl1)
-			/ (double) abs(sup.xpxl2 - sup.xpxl1);
+			/ (double) abs(sup.xpxl2 - sup.startingx);
 		img_pix_put(img, sup.xpxl1, floor(sup.intery),
 			intrpol_col(a->color, b->color, t, rfpart(sup.intery)));
 		img_pix_put(img, sup.xpxl1, floor(sup.intery) + 1,

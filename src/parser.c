@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 17:19:01 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:36:39 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,6 @@ static void	ft_str2maprow(t_map *map, char *str, int row)
 			map->min_z = map->arr[row][pos].z;
 	}
 	ft_free_array(splited);
-}
-
-static t_point	**ft_realloc_maparr(t_point **arr, int *row_size)
-{
-	int		new_size;
-	t_point	**res;
-	int		pos;
-
-	if (*row_size >= (2147483647 / 2))
-		new_size = 2147483647 - 1;
-	else
-		new_size = *row_size * 2;
-	pos = -1;
-	res = malloc(sizeof(t_point *) * (new_size + 1));
-	if (!res)
-		return (free(arr), NULL);
-	while (++pos < *row_size)
-		res[pos] = arr[pos];
-	free(arr);
-	*row_size = new_size;
-	res[new_size] = NULL;
-	return (res);
 }
 
 void	recheck_colors(t_map *map)

@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 16:03:52 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:37:34 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ typedef struct s_xialinwusup
 	int		xpxl2;
 	int		ypxl1;
 	int		ypxl2;
+	int		startingx;
 	double	intery;
 	double	dx;
 	double	dy;
@@ -130,10 +131,10 @@ void	ft_project(t_map *map, t_cam *cam);
 
 //utils.c
 
-int		ft_array_len(char **arr);
 void	ft_free_array(char **array);
 int		ft_atoi_base(char *str, char *base);
 int		intrpol_col(int acol, int bcol, double t, double brght);
+t_point	**ft_realloc_maparr(t_point **arr, int *row_size);
 
 //draw_utils.c
 
@@ -160,5 +161,6 @@ void	render_wu_line(t_img *img, t_point a, t_point b);
 double	fpart(float x);
 double	rfpart(float x);
 int		both_invisible(t_point *a, t_point *b);
+int		ft_array_len(char **arr);
 
 #endif
