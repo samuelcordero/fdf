@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 17:35:00 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 17:38:58 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/29 01:01:10 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ static void	render_high_steep_wu_line(t_img *img, t_point *a, t_point *b)
 	if (sup.dx == 0.0)
 		sup.gradient = 1.0;
 	sup.steep = 1;
-	if (fabs(b->proy_x - a->proy_x) <= 1.0
-		&& fabs(b->proy_y - a->proy_y) <= 1.0)
+	if (fabs(b->proy_x - a->proy_x) <= 1.45
+		&& fabs(b->proy_y - a->proy_y) <= 1.45)
 		return ;
 	wu_startpnt(img, a, b, &sup);
 	wu_endpnt(img, a, b, &sup);
@@ -102,8 +102,8 @@ static void	render_low_steep_wu_line(t_img *img, t_point *a, t_point *b)
 	if (sup.dx == 0.0)
 		sup.gradient = 1.0;
 	sup.steep = 0;
-	if (fabs(b->proy_x - a->proy_x) <= 1.0
-		&& fabs(b->proy_y - a->proy_y) <= 1.0)
+	if (fabs(b->proy_x - a->proy_x) <= 1.45
+		&& fabs(b->proy_y - a->proy_y) <= 1.45)
 		return ;
 	wu_startpnt(img, a, b, &sup);
 	wu_endpnt(img, a, b, &sup);
