@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:08:40 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 17:44:42 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:47:18 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,6 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 		fdf->cam.x += fdf->map->h_tile_size;
 	else if (key == MOVE_RIGHT)
 		fdf->cam.x -= fdf->map->h_tile_size;
-	else if (key == RESET_CAM)
-		reset_cam(fdf);
-	else if (key == CHANGE_PROJ)
-		fdf->cam.mode = !fdf->cam.mode;
 }
 
 static void	kb_rotations_hook2(int key, t_fdf *fdf)
@@ -65,6 +61,10 @@ static void	kb_rotations_hook2(int key, t_fdf *fdf)
 		fdf->cam.v_factor -= 0.02;
 	else if (key == V_ZOOM_OUT)
 		fdf->cam.v_factor += 0.02;
+	else if (key == RESET_CAM)
+		reset_cam(fdf);
+	else if (key == CHANGE_PROJ)
+		fdf->cam.mode = !fdf->cam.mode;
 }
 
 int	ft_input_hook(int keycode, t_fdf *fdf)
