@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:08:40 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 13:56:20 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:44:42 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ int	hook_exit(t_fdf *fdf)
 static void	kb_rotations_hook(int key, t_fdf *fdf)
 {
 	if (key == ZOOM_IN)
-		fdf->map->h_tile_size += 1;
+	{
+		if (fdf->map->h_tile_size < 500)
+			fdf->map->h_tile_size += 1;
+	}
 	else if (key == ZOOM_OUT)
 	{
 		if (fdf->map->h_tile_size > 2)
@@ -43,13 +46,13 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 	else if (key == ROTATE_RIGHT)
 		fdf->cam.angle -= 0.02;
 	else if (key == MOVE_DOWN)
-		fdf->cam.y -= 5;
+		fdf->cam.y -= fdf->map->h_tile_size;
 	else if (key == MOVE_UP)
-		fdf->cam.y += 5;
+		fdf->cam.y += fdf->map->h_tile_size;
 	else if (key == MOVE_LEFT)
-		fdf->cam.x += 5;
+		fdf->cam.x += fdf->map->h_tile_size;
 	else if (key == MOVE_RIGHT)
-		fdf->cam.x -= 5;
+		fdf->cam.x -= fdf->map->h_tile_size;
 	else if (key == RESET_CAM)
 		reset_cam(fdf);
 	else if (key == CHANGE_PROJ)
