@@ -6,11 +6,23 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 14:29:58 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 18:45:35 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 11:50:06 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
+
+int	ft_array_len(char **arr)
+{
+	int	counter;
+
+	counter = 0;
+	if (!arr)
+		return (counter);
+	while (arr[counter])
+		++counter;
+	return (counter);
+}
 
 void	ft_free_array(char **array)
 {

@@ -6,17 +6,17 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/24 00:43:06 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 16:03:52 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
-# define WIN_WIDTH 1800
-# define WIN_HEIGHT 1000
+# define WIN_WIDTH 1920
+# define WIN_HEIGHT 1080
 # define PI 3.14
 # define PI2 6.28
-# define PIo4 0.785
+# define PIO4 0.785
 
 //key definitions
 # ifndef MAC_OS
@@ -32,9 +32,8 @@
 #  define ZOOM_IN 122
 #  define RESET_CAM 114
 #  define CHANGE_PROJ 112
-
-#  define WHEEL_UP 3
-#  define WHEEL_DOWN 4
+#  define V_ZOOM_OUT 9
+#  define V_ZOOM_IN 11
 # else
 #  define ESCAPE 53
 #  define HELP_KEY 72
@@ -47,10 +46,9 @@
 #  define ZOOM_OUT 7
 #  define ZOOM_IN 6
 #  define RESET_CAM 15
-#  define CHANGE_PROJ 20 //check
-
-#  define WHEEL_UP 3
-#  define WHEEL_DOWN 4
+#  define CHANGE_PROJ 35
+#  define V_ZOOM_OUT 9
+#  define V_ZOOM_IN 11
 # endif
 
 # include <math.h>
@@ -63,6 +61,7 @@ typedef struct s_camera
 	int		x;
 	int		y;
 	char	mode;
+	double	v_factor;
 }	t_cam;
 
 typedef struct s_img
@@ -131,9 +130,17 @@ void	ft_project(t_map *map, t_cam *cam);
 
 //utils.c
 
+int		ft_array_len(char **arr);
 void	ft_free_array(char **array);
 int		ft_atoi_base(char *str, char *base);
 int		intrpol_col(int acol, int bcol, double t, double brght);
+
+//draw_utils.c
+
+void	render_fdf_down(t_fdf *fdf);
+void	render_fdf_up(t_fdf *fdf);
+void	render_fdf_left(t_fdf *fdf);
+void	render_fdf_right(t_fdf *fdf);
 
 //parser.c
 
@@ -152,6 +159,6 @@ void	render_wu_line(t_img *img, t_point a, t_point b);
 
 double	fpart(float x);
 double	rfpart(float x);
-int			both_invisible(t_point *a, t_point *b);
+int		both_invisible(t_point *a, t_point *b);
 
 #endif

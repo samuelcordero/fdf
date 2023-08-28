@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:36:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/23 18:27:45 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 13:40:55 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static void	ft_rotate_point(t_point *pnt, double ang, int h_wdth, int h_hght)
 		- (sin(ang) * (pnt->y - h_hght));
 	pnt->proy_y = (sin(ang) * (pnt->x - h_wdth))
 		+ (cos(ang) * (pnt->y - h_hght));
-  //printf("Cos: %f sin: %f proy x,y: %f %f\n", cos(ang), sin(ang), pnt->proy_x, pnt->proy_y);
 }
 
 static void	ft_rotate_map(t_map *map, double *angle)
@@ -60,8 +59,10 @@ static void	proj_pnt(t_point *pnt, double t_sze, double v_sze, t_cam *cam)
 	}
 	else
 	{
-		pnt->proy_x = cam->x + ((prev_x - pnt->proy_y) * (t_sze)) + h_wdth + (pnt->z * v_sze * 0.5);
-		pnt->proy_y = cam->y + h_hght + ((prev_x + pnt->proy_y) * t_sze) - (pnt->z * v_sze * 0.5);
+		pnt->proy_x = cam->x + ((prev_x - pnt->proy_y)
+				* (t_sze)) + h_wdth + (pnt->z * v_sze * 0.25);
+		pnt->proy_y = cam->y + h_hght + ((prev_x + pnt->proy_y)
+				* t_sze) - (pnt->z * v_sze * 0.25);
 	}
 }
 
@@ -69,17 +70,15 @@ void	ft_project(t_map *map, t_cam *cam)
 {
 	int		i;
 	int		j;
-	double	height_factor;
 
 	j = -1;
 	ft_rotate_map(map, &(cam->angle));
-	height_factor = map->h_tile_size;
 	while (++j < map->height)
 	{
 		i = -1;
 		while (++i < map->width)
 			proj_pnt(&map->arr[j][i],
-				map->h_tile_size, height_factor, cam);
+				map->h_tile_size, map->h_tile_size * cam->v_factor, cam);
 	}
 }
 

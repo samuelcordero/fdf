@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/17 17:44:19 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 17:22:19 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ static void	init(t_fdf *fdf)
 	fdf->cam.y = 0;
 	fdf->cam.angle = 0.0;
 	fdf->cam.mode = 1;
+	fdf->cam.v_factor = 1.0;
 }
 
 int	main(int argc, char **argv)
@@ -44,8 +45,16 @@ int	main(int argc, char **argv)
 		return (1);
 	fd = open(argv[1], O_RDONLY, 0644);
 	if (fd < 0)
+	{
+		ft_putendl_fd("Couldn't open file :(", 2);
 		return (1);
+	}
 	fdf.map = parse_map(fd);
+	if (!fdf.map)
+	{
+		ft_putendl_fd("Couldn't load file :(", 2);
+		return (1);
+	}
 	mlx_loop_hook(fdf.mlx, &render, &fdf);
 	mlx_hook(fdf.win_ptr, 17, 0, &hook_exit, &fdf);
 	mlx_hook(fdf.win_ptr, 2, 1, &ft_input_hook, &fdf);
@@ -54,7 +63,14 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-/* void	ft_printmap(t_map *map)
+/* 
+
+void	leaks(void)
+{
+	system("leaks fdf");
+}
+
+void	ft_printmap(t_map *map)
 {
 	int	i;
 	int	j;

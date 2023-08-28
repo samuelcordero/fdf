@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:08:40 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/23 18:09:48 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 13:56:20 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void	reset_cam(t_fdf *fdf)
 	fdf->cam.x = 0;
 	fdf->cam.y = 0;
 	fdf->map->h_tile_size = fdf->map->og_tile_size;
+	fdf->cam.v_factor = 1.0;
+	fdf->cam.mode = 1;
 }
 
 int	hook_exit(t_fdf *fdf)
@@ -33,25 +35,33 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 		fdf->map->h_tile_size += 1;
 	else if (key == ZOOM_OUT)
 	{
-		if (fdf->map->h_tile_size > 1)
+		if (fdf->map->h_tile_size > 2)
 			fdf->map->h_tile_size -= 1;
 	}
 	else if (key == ROTATE_LEFT)
-		fdf->cam.angle += 0.03;
+		fdf->cam.angle += 0.02;
 	else if (key == ROTATE_RIGHT)
-		fdf->cam.angle -= 0.03;
+		fdf->cam.angle -= 0.02;
 	else if (key == MOVE_DOWN)
-		fdf->cam.y -= 10;
+		fdf->cam.y -= 5;
 	else if (key == MOVE_UP)
-		fdf->cam.y += 10;
+		fdf->cam.y += 5;
 	else if (key == MOVE_LEFT)
-		fdf->cam.x += 10;
+		fdf->cam.x += 5;
 	else if (key == MOVE_RIGHT)
-		fdf->cam.x -= 10;
+		fdf->cam.x -= 5;
 	else if (key == RESET_CAM)
 		reset_cam(fdf);
 	else if (key == CHANGE_PROJ)
 		fdf->cam.mode = !fdf->cam.mode;
+}
+
+static void	kb_rotations_hook2(int key, t_fdf *fdf)
+{
+	if (key == V_ZOOM_IN)
+		fdf->cam.v_factor -= 0.02;
+	else if (key == V_ZOOM_OUT)
+		fdf->cam.v_factor += 0.02;
 }
 
 int	ft_input_hook(int keycode, t_fdf *fdf)
@@ -60,6 +70,7 @@ int	ft_input_hook(int keycode, t_fdf *fdf)
 	if (keycode == ESCAPE)
 		hook_exit(fdf);
 	kb_rotations_hook(keycode, fdf);
+	kb_rotations_hook2(keycode, fdf);
 	return (0);
 }
 

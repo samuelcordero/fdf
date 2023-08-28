@@ -6,7 +6,7 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/08/24 00:26:52 by sacorder         ###   ########.fr        #
+#    Updated: 2023/08/28 17:14:04 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ LD = -L libft -lft -lm
 NAME = fdf
 FLAGS = -Wall -Wextra -Werror -O3 #-g3 -fsanitize=address
 INCLUDE = inc/fdf.h 
-SRC = src/main.c src/parser.c src/draw.c src/transform.c src/utils.c src/hooks.c src/wu_line.c src/math_utils.c #src/help.c #src/mousehooks.c src/kbhooks.c
+SRC = src/main.c src/parser.c src/draw.c src/transform.c src/utils.c src/hooks.c src/wu_line.c src/math_utils.c src/draw_utils.c#src/help.c
 OBJ = $(SRC:.c=.o)
 RM=/bin/rm -f
 UNAME := $(shell uname -s)
@@ -44,7 +44,7 @@ $(MINILIBX):
 	@make -C $(MINILIB_PATH)
 	
 $(NAME): $(LIBFT) $(MINILIBX) $(OBJ) $(INCLUDE) 
-	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) -o $(NAME) $(LD)
+	$(CC) $(FLAGS) $(OBJ) $(MINILIBX) $(LDFLAGS) -o $(NAME) $(LD)
 
 
 %.o: %.c
@@ -63,6 +63,11 @@ fclean: clean
 
 re:: fclean
 re:: all
+
+asan:: CFLAGS += -fsanitize=address -g3
+asan:: LDFLAGS += -fsanitize=address
+asan:: re
+
 
 normi:
 	@norminette src inc libft

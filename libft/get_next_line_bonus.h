@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/17 17:11:02 by sacorder          #+#    #+#             */
-/*   Updated: 2023/04/26 13:51:19 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/28 16:07:57 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <limits.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 64
+#  define BUFFER_SIZE 128
 # endif
 
 # ifndef OPEN_MAX
