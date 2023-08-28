@@ -38,7 +38,7 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 	}
 	else if (key == ZOOM_OUT)
 	{
-		if (fdf->map->h_tile_size > 2)
+		if (fdf->map->h_tile_size > 1)
 			fdf->map->h_tile_size -= 1;
 	}
 	else if (key == ROTATE_LEFT)
@@ -46,13 +46,13 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 	else if (key == ROTATE_RIGHT)
 		fdf->cam.angle -= 0.02;
 	else if (key == MOVE_DOWN)
-		fdf->cam.y -= fdf->map->h_tile_size;
+		fdf->cam.y -= fdf->map->h_tile_size + 1;
 	else if (key == MOVE_UP)
-		fdf->cam.y += fdf->map->h_tile_size;
+		fdf->cam.y += fdf->map->h_tile_size + 1;
 	else if (key == MOVE_LEFT)
-		fdf->cam.x += fdf->map->h_tile_size;
+		fdf->cam.x += fdf->map->h_tile_size + 1;
 	else if (key == MOVE_RIGHT)
-		fdf->cam.x -= fdf->map->h_tile_size;
+		fdf->cam.x -= fdf->map->h_tile_size + 1;
 }
 
 static void	kb_rotations_hook2(int key, t_fdf *fdf)

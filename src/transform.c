@@ -12,12 +12,10 @@
 
 #include "../inc/fdf.h"
 
-static void	ft_rotate_point(t_point *pnt, double ang, int h_wdth, int h_hght)
+static void	ft_rotate_point(t_point *pnt, double ang, int x, int y)
 {
-	pnt->proy_x = (cos(ang) * (pnt->x - h_wdth))
-		- (sin(ang) * (pnt->y - h_hght));
-	pnt->proy_y = (sin(ang) * (pnt->x - h_wdth))
-		+ (cos(ang) * (pnt->y - h_hght));
+	pnt->proy_x = (cos(ang) * (float)x) - (sin(ang) * (float)y);
+	pnt->proy_y = (sin(ang) * (float)x) + (cos(ang) * (float)y);
 }
 
 static void	ft_rotate_map(t_map *map, double *angle)
@@ -38,7 +36,7 @@ static void	ft_rotate_map(t_map *map, double *angle)
 	{
 		i = -1;
 		while (++i < map->width)
-			ft_rotate_point(&map->arr[j][i], *angle, half_width, half_height);
+			ft_rotate_point(&map->arr[j][i], *angle, i - half_width, j - half_height);
 	}
 }
 

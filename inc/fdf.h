@@ -32,8 +32,8 @@
 #  define ZOOM_IN 122
 #  define RESET_CAM 114
 #  define CHANGE_PROJ 112
-#  define V_ZOOM_OUT 9
-#  define V_ZOOM_IN 11
+#  define V_ZOOM_OUT 118
+#  define V_ZOOM_IN 98
 # else
 #  define ESCAPE 53
 #  define HELP_KEY 72
@@ -75,8 +75,6 @@ typedef struct s_img
 
 typedef struct s_point
 {
-	double	x;
-	double	y;
 	double	z;
 	double	proy_x;
 	double	proy_y;

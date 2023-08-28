@@ -12,15 +12,13 @@
 
 #include "../inc/fdf.h"
 
-static t_point	ft_str2point(int x, int y, char *str)
+static t_point	ft_str2point(char *str)
 {
 	t_point	this;
 	char	**splited;
 
 	splited = ft_split(str, ',');
 	this.z = 0;
-	this.x = x;
-	this.y = y;
 	if (splited && splited[0])
 		this.z = ft_atoi(splited[0]);
 	if (splited[1])
@@ -52,7 +50,7 @@ static void	ft_str2maprow(t_map *map, char *str, int row)
 	map->arr[row] = malloc(sizeof(t_point) * (map->width));
 	while (++pos < map->width)
 	{
-		map->arr[row][pos] = ft_str2point(pos, row, splited[pos]);
+		map->arr[row][pos] = ft_str2point(splited[pos]);
 		if (map->max_z < map->arr[row][pos].z)
 			map->max_z = map->arr[row][pos].z;
 		if (map->min_z > map->arr[row][pos].z)
@@ -81,8 +79,6 @@ void	recheck_colors(t_map *map)
 				map->arr[j][i].color = intrpol_col(0xFF0000, 0x0000FF,
 						fabs(map->arr[j][i].z - map->min_z)
 						/ fabs (map->max_z - map->min_z), 1);
-			if (map->arr[j][i].color <= 0)
-				map->arr[j][i].color = 0x880088;
 		}
 	}
 }
@@ -95,7 +91,7 @@ static t_map	*init_params(int *row, t_map *res)
 		ft_putendl_fd("Couldn't allocate map memory :(", 2);
 		exit(1);
 	}
-	res->height = 32;
+	res->height = 128;
 	res->min_z = (double) INT_MAX;
 	res->max_z = (double) INT_MIN;
 	*row = 0;
