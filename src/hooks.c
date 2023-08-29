@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:08:40 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/30 01:09:17 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 01:39:25 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ static void	kb_rotations_hook(int key, t_fdf *fdf)
 
 static void	kb_rotations_hook2(int key, t_fdf *fdf)
 {
-	if (key == V_ZOOM_IN)
+	if (key == V_DEC)
 		fdf->cam.v_factor -= 0.02;
-	else if (key == V_ZOOM_OUT)
+	else if (key == V_INC)
 		fdf->cam.v_factor += 0.02;
 	else if (key == RESET_CAM)
 		reset_cam(fdf);

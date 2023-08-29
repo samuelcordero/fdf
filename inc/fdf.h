@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/30 01:08:07 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 01:39:01 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 #  define ZOOM_IN 122
 #  define RESET_CAM 114
 #  define CHANGE_PROJ 112
-#  define V_ZOOM_OUT 118
-#  define V_ZOOM_IN 98
+#  define V_INC 118
+#  define V_DEC 98
 #  define TOGGLE_HELP 104
 # else
 #  define ESCAPE 53
@@ -48,9 +48,9 @@
 #  define ZOOM_IN 6
 #  define RESET_CAM 15
 #  define CHANGE_PROJ 35
-#  define V_ZOOM_OUT 9
-#  define V_ZOOM_IN 11
-#  define TOGGLE_HELP 104
+#  define V_INC 9
+#  define V_DEC 11
+#  define TOGGLE_HELP 4
 # endif
 
 # include <math.h>
