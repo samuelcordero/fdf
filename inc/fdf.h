@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/29 12:26:03 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 00:01:16 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,5 +161,9 @@ double	rfpart(float x);
 int		both_invisible(t_point *a, t_point *b);
 int		ft_array_len(char **arr);
 int		ft_isspace(char c);
+
+//point.c
+
+t_point	ft_str2point(char *substr, int len);
 
 #endif

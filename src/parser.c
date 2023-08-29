@@ -6,40 +6,40 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/29 14:56:11 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 00:00:20 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 
-static t_point	ft_str2point(char *substr, int len)
+static void	ft_str2maprow_cons(t_map *map, char *str, int row)
 {
-	t_point	this;
-	int		i;
+	int	pos;
+	int	end;
+	int	arrpos;
 
-	i = 0;
-	this.z = ft_atoi(substr);
-	while ((ft_isdigit(substr[i]) || substr[i] == '-'
-			|| substr[i] == '+') && i < len)
-		++i;
-	while (substr[i] == ',' && i < len)
-		++i;
-	if (substr[i] && !ft_isspace(substr[i]) && i < len)
+	arrpos = -1;
+	end = 0;
+	while (++arrpos < map->width)
 	{
-		this.color = ft_atoi_base(&substr[i], "0123456789abcdef");
-		if (this.color == -1)
-			this.color = ft_atoi_base(&substr[i], "0123456789ABCDEF");
+		pos = end;
+		while (ft_isspace(str[pos]))
+			++pos;
+		end = pos;
+		while (!ft_isspace(str[end]) && str[end] != '\n')
+			++end;
+		map->arr[row][arrpos] = ft_str2point(&str[pos], end - pos);
+		if (map->max_z < map->arr[row][arrpos].z)
+			map->max_z = map->arr[row][arrpos].z;
+		if (map->min_z > map->arr[row][arrpos].z)
+			map->min_z = map->arr[row][arrpos].z;
 	}
-	else
-		this.color = -1;
-	return (this);
 }
 
 static void	ft_str2maprow(t_map *map, char *str, int row)
 {
-	int		pos;
-	int		end;
-	int		arrpos;
+	int	pos;
+	int	end;
 
 	pos = 0;
 	end = 0;
@@ -61,22 +61,7 @@ static void	ft_str2maprow(t_map *map, char *str, int row)
 	else if (map->width > end)
 		map->width = end;
 	map->arr[row] = malloc(sizeof(t_point) * (map->width));
-	arrpos = -1;
-	end = 0;
-	while (++arrpos < map->width)
-	{
-		pos = end;
-		while (ft_isspace(str[pos]))
-			++pos;
-		end = pos;
-		while (!ft_isspace(str[end]) && str[end] != '\n')
-			++end;
-		map->arr[row][arrpos] = ft_str2point(&str[pos], end - pos);
-		if (map->max_z < map->arr[row][arrpos].z)
-			map->max_z = map->arr[row][arrpos].z;
-		if (map->min_z > map->arr[row][arrpos].z)
-			map->min_z = map->arr[row][arrpos].z;
-	}
+	ft_str2maprow_cons(map, str, row);
 }
 
 void	recheck_colors(t_map *map)
