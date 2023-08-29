@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:09:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 16:03:29 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 01:24:04 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,14 @@ int	render(t_fdf *fdf)
 		render_fdf_up(fdf);
 	else if (fdf->cam.angle >= PI + PIO4 && fdf->cam.angle < PI2 - PIO4)
 		render_fdf_right(fdf);
-	mlx_put_image_to_window(fdf->mlx, fdf->win_ptr, fdf->img.mlx_img, 0, 0);
+	if (!fdf->show_help)
+	{
+		mlx_put_image_to_window(fdf->mlx, fdf->win_ptr,
+			fdf->img.mlx_img, 0, 0);
+		mlx_string_put(fdf->mlx, fdf->win_ptr, 20, 25,
+			0xFFFFFF, "Press H for help");
+	}
+	else
+		draw_help(&fdf->img, fdf);
 	return (0);
 }

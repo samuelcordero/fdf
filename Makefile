@@ -6,7 +6,7 @@
 #    By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/23 15:21:07 by sacorder          #+#    #+#              #
-#    Updated: 2023/08/30 00:01:32 by sacorder         ###   ########.fr        #
+#    Updated: 2023/08/30 01:04:21 by sacorder         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ LD = -L libft -lft -lm
 NAME = fdf
 FLAGS = -Wall -Wextra -Werror -O3 #-g3 -fsanitize=address
 INCLUDE = inc/fdf.h 
-SRC = src/main.c src/parser.c src/draw.c src/transform.c src/utils.c src/hooks.c src/wu_line.c src/math_utils.c src/draw_utils.c src/point.c#src/help.c
+SRC = src/main.c src/parser.c src/draw.c src/transform.c src/utils.c src/hooks.c src/wu_line.c src/math_utils.c src/draw_utils.c src/point.c src/help.c
 OBJ = $(SRC:.c=.o)
 RM=/bin/rm -f
 UNAME := $(shell uname -s)

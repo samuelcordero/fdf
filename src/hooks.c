@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/28 17:08:40 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 17:47:18 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 01:09:17 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ static void	kb_rotations_hook2(int key, t_fdf *fdf)
 		reset_cam(fdf);
 	else if (key == CHANGE_PROJ)
 		fdf->cam.mode = !fdf->cam.mode;
+	else if (key == TOGGLE_HELP)
+		fdf->show_help = !fdf->show_help;
 }
 
 int	ft_input_hook(int keycode, t_fdf *fdf)

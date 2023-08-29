@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/30 00:01:16 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 01:08:07 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 #  define CHANGE_PROJ 112
 #  define V_ZOOM_OUT 118
 #  define V_ZOOM_IN 98
+#  define TOGGLE_HELP 104
 # else
 #  define ESCAPE 53
 #  define HELP_KEY 72
@@ -49,6 +50,7 @@
 #  define CHANGE_PROJ 35
 #  define V_ZOOM_OUT 9
 #  define V_ZOOM_IN 11
+#  define TOGGLE_HELP 104
 # endif
 
 # include <math.h>
@@ -99,6 +101,7 @@ typedef struct s_fdf
 	void	*win_ptr;
 	t_img	img;
 	t_cam	cam;
+	char	show_help;
 }	t_fdf;
 
 typedef struct s_xialinwusup
@@ -165,5 +168,9 @@ int		ft_isspace(char c);
 //point.c
 
 t_point	ft_str2point(char *substr, int len);
+
+//help.c
+
+void	draw_help(t_img *img, t_fdf *fdf);
 
 #endif

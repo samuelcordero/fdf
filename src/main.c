@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/29 14:53:37 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 01:02:59 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ static void	init(t_fdf *fdf)
 	fdf->cam.angle = 0.0;
 	fdf->cam.mode = 1;
 	fdf->cam.v_factor = 1.0;
+	fdf->show_help = 0;
 }
 
 int	main(int argc, char **argv)
