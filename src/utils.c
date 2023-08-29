@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 14:29:58 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 17:35:44 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/29 14:52:18 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,13 @@ int	ft_atoi_base(char *str, char *base)
 	base_divider = (int) ft_strlen(base);
 	result = 0;
 	i = 0;
-	while (str[i] == '\f' || str[i] == '\t' || str[i] == ' '
-		|| str[i] == '\n' || str[i] == '\r' || str[i] == '\v'
-		|| str[i] == '0' || str[i] == 'x')
-		i++;
-	while (str[i] && str[i] != '\n')
+	while (ft_isspace(str[i]))
+		++i;
+	if (str[i] == '0')
+		++i;
+	if (str[i] == 'x')
+		++i;
+	while (str[i] && !ft_isspace(str[i]))
 	{
 		result *= base_divider;
 		digit = ft_get_int_from_base(str[i], base);

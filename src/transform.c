@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:36:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 13:40:55 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/29 14:54:03 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ static void	ft_rotate_map(t_map *map, double *angle)
 	{
 		i = -1;
 		while (++i < map->width)
-			ft_rotate_point(&map->arr[j][i], *angle, i - half_width, j - half_height);
+			ft_rotate_point(&map->arr[j][i], *angle,
+				i - half_width, j - half_height);
 	}
 }
 

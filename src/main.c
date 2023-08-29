@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 17:22:19 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/29 14:53:37 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void	ft_printmap(t_map *map)
 		i = 0;
 		while (i < map->width)
 		{
-			printf("x: %f, y: %f, z: %f, color: %i\n",
-				map->arr[j][i].x, map->arr[j][i].y,
+			printf("x: %i, y: %i, z: %f, color: %i\n",
+				i, j,
 				map->arr[j][i].z, map->arr[j][i].color);
 			++i;
 		}

@@ -6,57 +6,77 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 17:36:39 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/29 14:56:11 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/fdf.h"
 
-static t_point	ft_str2point(char *str)
+static t_point	ft_str2point(char *substr, int len)
 {
 	t_point	this;
-	char	**splited;
+	int		i;
 
-	splited = ft_split(str, ',');
-	this.z = 0;
-	if (splited && splited[0])
-		this.z = ft_atoi(splited[0]);
-	if (splited[1])
+	i = 0;
+	this.z = ft_atoi(substr);
+	while ((ft_isdigit(substr[i]) || substr[i] == '-'
+			|| substr[i] == '+') && i < len)
+		++i;
+	while (substr[i] == ',' && i < len)
+		++i;
+	if (substr[i] && !ft_isspace(substr[i]) && i < len)
 	{
-		this.color = ft_atoi_base(splited[1], "0123456789ABCDEF");
+		this.color = ft_atoi_base(&substr[i], "0123456789abcdef");
 		if (this.color == -1)
-			this.color = ft_atoi_base(splited[1], "0123456789abcdef");
+			this.color = ft_atoi_base(&substr[i], "0123456789ABCDEF");
 	}
 	else
 		this.color = -1;
-	return (ft_free_array(splited), this);
+	return (this);
 }
 
 static void	ft_str2maprow(t_map *map, char *str, int row)
 {
 	int		pos;
-	char	**splited;
+	int		end;
+	int		arrpos;
 
-	pos = -1;
+	pos = 0;
+	end = 0;
 	if (!str)
 		return ;
-	splited = ft_split(str, ' ');
-	if (!splited)
-		return ;
-	if (!row)
-		map->width = ft_array_len(splited);
-	else if (map->width > ft_array_len(splited))
-		map->width = ft_array_len(splited);
-	map->arr[row] = malloc(sizeof(t_point) * (map->width));
-	while (++pos < map->width)
+	while (str[pos] && str[pos] != '\n')
 	{
-		map->arr[row][pos] = ft_str2point(splited[pos]);
-		if (map->max_z < map->arr[row][pos].z)
-			map->max_z = map->arr[row][pos].z;
-		if (map->min_z > map->arr[row][pos].z)
-			map->min_z = map->arr[row][pos].z;
+		if (!ft_isspace(str[pos]))
+		{
+			++end;
+			while (!ft_isspace(str[pos]) && str[pos])
+				++pos;
+		}
+		else
+			++pos;
 	}
-	ft_free_array(splited);
+	if (!row)
+		map->width = end;
+	else if (map->width > end)
+		map->width = end;
+	map->arr[row] = malloc(sizeof(t_point) * (map->width));
+	arrpos = -1;
+	end = 0;
+	while (++arrpos < map->width)
+	{
+		pos = end;
+		while (ft_isspace(str[pos]))
+			++pos;
+		end = pos;
+		while (!ft_isspace(str[end]) && str[end] != '\n')
+			++end;
+		map->arr[row][arrpos] = ft_str2point(&str[pos], end - pos);
+		if (map->max_z < map->arr[row][arrpos].z)
+			map->max_z = map->arr[row][arrpos].z;
+		if (map->min_z > map->arr[row][arrpos].z)
+			map->min_z = map->arr[row][arrpos].z;
+	}
 }
 
 void	recheck_colors(t_map *map)
@@ -74,7 +94,7 @@ void	recheck_colors(t_map *map)
 	{
 		i = -1;
 		while (++i < map->width)
-		{
+		{	
 			if (map->arr[j][i].color == -1)
 				map->arr[j][i].color = intrpol_col(0xFF0000, 0x0000FF,
 						fabs(map->arr[j][i].z - map->min_z)
@@ -130,3 +150,55 @@ t_map	*parse_map(int fd)
 	return (res->arr[row] = NULL, res->height = row,
 		recheck_colors(res), res->og_tile_size = res->h_tile_size, res);
 }
+
+/* 
+static t_point	ft_str2point(char *str)
+{
+	t_point	this;
+	int		i;
+
+	i = 0;
+	this.z = ft_atoi(str);
+	while (ft_isspace(str[i]))
+		++i;
+	while (ft_isdigit(str[i]))
+		++i;
+	while (str[i] == ',')
+		++i;
+	if (str[i] && !ft_isspace(str[i]))
+	{
+		this.color = ft_atoi_base(&str[i], "0123456789abcdef");
+		if (this.color == -1)
+			this.color = ft_atoi_base(&str[i], "0123456789ABCDEF");
+	}
+	else
+		this.color = -1;
+	return (this);
+}
+
+static void	ft_str2maprow(t_map *map, char *str, int row)
+{
+	int		pos;
+	char	**splited;
+
+	pos = -1;
+	if (!str)
+		return ;
+	splited = ft_split(str, ' ');
+	if (!splited)
+		return ;
+	if (!row)
+		map->width = ft_array_len(splited);
+	else if (map->width > ft_array_len(splited))
+		map->width = ft_array_len(splited);
+	map->arr[row] = malloc(sizeof(t_point) * (map->width));
+	while (++pos < map->width)
+	{
+		map->arr[row][pos] = ft_str2point(splited[pos]);
+		if (map->max_z < map->arr[row][pos].z)
+			map->max_z = map->arr[row][pos].z;
+		if (map->min_z > map->arr[row][pos].z)
+			map->min_z = map->arr[row][pos].z;
+	}
+	ft_free_array(splited);
+} */

@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 17:51:11 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/28 17:34:23 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/29 12:28:58 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,11 @@ int	ft_array_len(char **arr)
 	while (arr[counter])
 		++counter;
 	return (counter);
+}
+
+int	ft_isspace(char c)
+{
+	if (c == ' ' || c == '\r' || c == '\t' || c == '\v' || c == '\n')
+		return (1);
+	return (0);
 }
