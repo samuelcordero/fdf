@@ -31,7 +31,7 @@ static void	init(t_fdf *fdf)
 	fdf->cam.y = 0;
 	fdf->cam.angle = 0.0;
 	fdf->cam.mode = 1;
-	fdf->cam.v_factor = 1.0;
+	fdf->cam.v_factor = 0.7;
 	fdf->show_help = 0;
 }
 
