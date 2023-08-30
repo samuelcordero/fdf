@@ -26,7 +26,7 @@ static void	ft_str2maprow_cons(t_map *map, char *str, int row)
 		while (ft_isspace(str[pos]))
 			++pos;
 		end = pos;
-		while (!ft_isspace(str[end]) && str[end] != '\n')
+		while (!ft_isspace(str[end]) && str[end] != '\n' && str[end])
 			++end;
 		map->arr[row][arrpos] = ft_str2point(&str[pos], end - pos);
 		if (map->max_z < map->arr[row][arrpos].z)
@@ -71,7 +71,7 @@ void	recheck_colors(t_map *map)
 	int	f;
 
 	j = -1;
-	f = fabs(1 + map->max_z - map->min_z) / 2;
+	f = (fabs(1.0 + map->max_z - map->min_z) / 2.0) + 1;
 	if ((float) WIN_HEIGHT / (float) map->height
 		> (float) WIN_WIDTH / (float) map->width)
 		map->h_tile_size = 0.7 * (float)(WIN_WIDTH) / (float)map->width;
