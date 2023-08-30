@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/30 12:08:41 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:20:00 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,12 @@ static void	init(t_fdf *fdf)
 	fdf->cam.v_factor = 0.5;
 	fdf->show_help = 0;
 }
-void	leaks(void)
-{
-	system("leaks fdf");
-}
 
 int	main(int argc, char **argv)
 {
 	t_fdf	fdf;
 	int		fd;
 
-	atexit(leaks);
 	fdf.mlx = mlx_init();
 	init(&fdf);
 	if (argc != 2)
@@ -70,7 +65,6 @@ int	main(int argc, char **argv)
 }
 
 /* 
-
 void	leaks(void)
 {
 	system("leaks fdf");
