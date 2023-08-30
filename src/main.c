@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 18:20:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/30 11:41:45 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:08:41 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,27 +34,32 @@ static void	init(t_fdf *fdf)
 	fdf->cam.v_factor = 0.5;
 	fdf->show_help = 0;
 }
+void	leaks(void)
+{
+	system("leaks fdf");
+}
 
 int	main(int argc, char **argv)
 {
 	t_fdf	fdf;
 	int		fd;
 
+	atexit(leaks);
 	fdf.mlx = mlx_init();
 	init(&fdf);
 	if (argc != 2)
-		return (1);
+		free_and_exit(&fdf);
 	fd = open(argv[1], O_RDONLY, 0644);
 	if (fd < 0)
 	{
 		ft_putendl_fd("Couldn't open file :(", 2);
-		return (1);
+		free_and_exit(&fdf);
 	}
 	fdf.map = parse_map(fd);
 	if (!fdf.map)
 	{
 		ft_putendl_fd("Couldn't load file :(", 2);
-		return (1);
+		free_and_exit(&fdf);
 	}
 	mlx_loop_hook(fdf.mlx, &render, &fdf);
 	mlx_hook(fdf.win_ptr, 17, 0, &hook_exit, &fdf);

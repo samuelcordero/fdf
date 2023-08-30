@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 14:07:46 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/30 01:39:01 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:08:09 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,5 +172,6 @@ t_point	ft_str2point(char *substr, int len);
 //help.c
 
 void	draw_help(t_img *img, t_fdf *fdf);
+void	free_and_exit(t_fdf *fdf);
 
 #endif

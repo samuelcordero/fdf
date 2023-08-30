@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/30 00:52:06 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/30 11:43:03 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 12:12:33 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,13 @@ void	draw_help(t_img *img, t_fdf *fdf)
 		0xFFFFFF, "V/B v_scale inc/dec");
 	mlx_string_put(fdf->mlx, fdf->win_ptr, 20, 25 + (6 * step),
 		0xFFFFFF, "P change projection");
+}
+
+void	free_and_exit(t_fdf *fdf)
+{
+	if (fdf->mlx)
+		free(fdf->mlx);
+	if (fdf->win_ptr)
+		free(fdf->win_ptr);
+	exit(1);
 }
