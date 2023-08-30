@@ -68,8 +68,10 @@ void	recheck_colors(t_map *map)
 {
 	int	i;
 	int	j;
+	int	f;
 
 	j = -1;
+	f = fabs(1 + map->max_z - map->min_z) / 2;
 	if ((float) WIN_HEIGHT / (float) map->height
 		> (float) WIN_WIDTH / (float) map->width)
 		map->h_tile_size = 0.7 * (float)(WIN_WIDTH) / (float)map->width;
@@ -80,10 +82,13 @@ void	recheck_colors(t_map *map)
 		i = -1;
 		while (++i < map->width)
 		{	
-			if (map->arr[j][i].color == -1)
-				map->arr[j][i].color = intrpol_col(0xFF0000, 0x0000FF,
-						fabs(map->arr[j][i].z - map->min_z)
-						/ fabs (map->max_z - map->min_z), 1);
+			if (map->arr[j][i].color == -1
+				&& map->arr[j][i].z < f + map->min_z)
+				map->arr[j][i].color = intrpol_col(0x00FF00, 0x0000FF,
+						fabs(map->arr[j][i].z - map->min_z) / f, 1);
+			else if (map->arr[j][i].color == -1)
+				map->arr[j][i].color = intrpol_col(0xFF0000, 0x00FF00,
+						fabs(map->arr[j][i].z - map->min_z - f) / f, 1);
 		}
 	}
 }
