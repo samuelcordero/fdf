@@ -6,7 +6,7 @@
 /*   By: sacorder <sacorder@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 12:24:41 by sacorder          #+#    #+#             */
-/*   Updated: 2023/08/30 00:00:20 by sacorder         ###   ########.fr       */
+/*   Updated: 2023/08/30 11:45:03 by sacorder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	recheck_colors(t_map *map)
 	int	f;
 
 	j = -1;
-	f = (fabs(1.0 + map->max_z - map->min_z) / 2.0) + 1;
+	f = 0.5 + fabs(1.0 + map->max_z - map->min_z) / 2.0;
 	if ((float) WIN_HEIGHT / (float) map->height
 		> (float) WIN_WIDTH / (float) map->width)
 		map->h_tile_size = 0.7 * (float)(WIN_WIDTH) / (float)map->width;
