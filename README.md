@@ -9,7 +9,7 @@ FDF es una aplicación de visualización de mapas en 3D que te permite represent
 - **Proyecciones:** FDF ofrece dos modos de proyección: isométrica y militar. Puedes alternar entre estas proyecciones presionando la tecla 'p'.
 
 - **Control de Cámara:** Toma el control de la cámara para navegar por el mapa:
-  - Traducción: Utiliza las teclas WASD para mover la cámara en las direcciones arriba, izquierda, abajo y derecha, respectivamente.
+  - Posición: Utiliza las teclas WASD para mover la cámara en las direcciones arriba, izquierda, abajo y derecha, respectivamente.
   - Rotación: Utiliza las teclas Q y E para rotar la cámara en sentido antihorario y horario, respectivamente.
   - Zoom: Realiza un acercamiento y alejamiento utilizando las teclas Z y X, respectivamente.
   - Escala Vertical: Ajusta la escala vertical del mapa con las teclas V (aumentar) y B (disminuir).
